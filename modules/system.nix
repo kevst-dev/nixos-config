@@ -11,4 +11,7 @@
     git         # Requerido para flakes
     just
   ];
+
+  # Habilitar zsh a nivel de sistema (requerido para Home Manager)
+  programs.zsh.enable = true;
 }

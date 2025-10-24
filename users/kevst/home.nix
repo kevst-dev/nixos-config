@@ -9,7 +9,10 @@
     ../../home/core.nix
   
     ../../home/programs/common.nix
+    
+    # Configuración básica del stack
     ../../home/programs/git.nix
+    ../../home/programs/zsh.nix
   ];
 
   programs.git = {
