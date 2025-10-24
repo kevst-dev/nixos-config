@@ -4,5 +4,8 @@
     home.packages = with pkgs; [
         # desarrollo
         claude-code
+
+        # reemplazo moderno de 'ls'
+        eza
     ];
 }     
