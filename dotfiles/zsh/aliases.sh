@@ -10,6 +10,11 @@
 alias l='ls -l'
 alias la='ls -la'
 
+# Reemplazo de 'cd' con 'zoxide'
+
+[[ -x "$(command -v eza)" ]] && eval "$(zoxide init zsh)" # habilitar zoxide
+[[ -x "$(command -v eza)" ]] && alias cd='z'
+
 # =============================================================================
 # Aliases de Git
 # =============================================================================

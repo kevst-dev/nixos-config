@@ -16,6 +16,7 @@
     # Terminal y shell
     ../../home/programs/zsh.nix
     ../../home/programs/starship.nix
+    ../../home/programs/zoxide.nix
   ];
 
   programs.git = {

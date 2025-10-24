@@ -5,7 +5,8 @@
         # desarrollo
         claude-code
 
-        # reemplazo moderno de 'ls'
-        eza
+        # reemplazos modernos de herramientas CLI
+        eza     # reemplazo moderno de 'ls'
+        bat     # reemplazo moderno de 'cat'
     ];
-}     
+}
