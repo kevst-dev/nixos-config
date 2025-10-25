@@ -12,6 +12,7 @@ main() {
     source "$ZSH_DIR/history.sh"
     source "$ZSH_DIR/aliases.sh"
     source "$ZSH_DIR/prompt.sh"
+    source "$ZSH_DIR/fzf/init.sh"
 }
 
 main "$@"
