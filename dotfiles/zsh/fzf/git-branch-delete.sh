@@ -53,12 +53,12 @@ main() {
         if [[ $confirm == "y" || $confirm == "Y" ]]; then
             echo "$branches" | while read -r branch_line; do
                 if [[ -n $branch_line ]]; then
-                    # Extraer nombre de rama del formato enriquecido (segunda columna)
+                    # Extraer nombre de rama del formato enriquecido (primera columna después de espacios)
                     local branch_name
-                    branch_name=$(echo "$branch_line" | awk '{print $2}')
+                    branch_name=$(echo "$branch_line" | awk '{print $1}' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]].*//')
                     
                     echo "🗑️  Eliminando rama: $branch_name"
-                    git branch -d "$branch_name" || {
+                    git branch -D "$branch_name" || {
                         echo "⚠️  No se pudo eliminar '$branch_name' (usa -D para forzar)"
                     }
                 fi
