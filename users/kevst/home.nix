@@ -17,6 +17,9 @@
     ../../home/programs/zsh.nix
     ../../home/programs/starship.nix
     ../../home/programs/zoxide.nix
+    
+    # Editor
+    ../../home/programs/neovim.nix
   ];
 
   programs.git = {
