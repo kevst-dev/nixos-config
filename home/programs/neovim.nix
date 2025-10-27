@@ -37,6 +37,9 @@ in {
             plenary-nvim         # librería lua
             nvim-web-devicons    # iconos
             nui-nvim             # UI components
+            
+            # colorschemes (cargan temprano)
+            catppuccin-nvim      # tema catppuccin
           ];
         };
 

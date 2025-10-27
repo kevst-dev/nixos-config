@@ -22,7 +22,7 @@ options.signcolumn = "yes"      -- Siempre mostrar columna de signos
 
 -- Líneas y columnas guía
 options.cursorline = true       -- Resaltar línea actual
-options.colorcolumn = "80"      -- Línea guía en columna 80
+options.colorcolumn = "88"      -- Línea guía en columna 80
 options.scrolloff = 4           -- Líneas mínimas arriba/abajo del cursor
 options.sidescrolloff = 4       -- Columnas mínimas izq/der del cursor
 
