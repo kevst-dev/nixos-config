@@ -1,4 +1,6 @@
 -- Configuración del colorscheme Catppuccin
+-- NO usar lze para colorschemes: van en startupPlugins y configuración directa
+-- (según template oficial de nixCats)
 require("catppuccin").setup({
   flavour = "frappe",
   styles = {
@@ -8,6 +10,6 @@ require("catppuccin").setup({
   },
 })
 
-vim.cmd.colorscheme "catppuccin-frappe"
+vim.cmd.colorscheme("catppuccin-frappe")
 
 print("🎨 Catppuccin configurado correctamente!")
