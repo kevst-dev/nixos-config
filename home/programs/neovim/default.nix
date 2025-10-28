@@ -63,9 +63,11 @@ in {
           # categorías a activar
           categories = {
             general = true;
+            # Lista de plugins relacionados con UI/interfaz
             neotree = true;
             sessions = true;
             colorscheme = true;
+            statusline = true;    # lualine para barra de estado
           };
           # información extra para lua
           extra = {

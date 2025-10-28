@@ -12,20 +12,24 @@
       nui-nvim             # UI components
       
       # colorschemes (cargan al inicio, configuración directa)
-      catppuccin-nvim      # tema catppuccin
+      kanagawa-paper-nvim        # tema kanagawa
     ];
   };
 
   # plugins opcionales (no cargan automáticamente)
   optionalPlugins = {
     neotree = with pkgs.vimPlugins; [
-        neo-tree-nvim        # explorador de archivos
-        plenary-nvim         # dependencia de neo-tree
-        nvim-web-devicons    # dependencia de neo-tree
-        nui-nvim             # dependencia de neo-tree
+      neo-tree-nvim        # explorador de archivos
+      plenary-nvim         # dependencia de neo-tree
+      nvim-web-devicons    # dependencia de neo-tree
+      nui-nvim             # dependencia de neo-tree
     ];
     sessions = with pkgs.vimPlugins; [
       auto-session           # guardado automático de sesiones por proyecto
+    ];
+    statusline = with pkgs.vimPlugins; [
+      lualine-nvim          # barra de estado moderna
+      nvim-web-devicons    # dependencia de neo-tree
     ];
   };
 }
