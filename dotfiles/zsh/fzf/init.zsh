@@ -3,7 +3,7 @@
 # ==========================================================================
 # FZF Scripts - Alias y Documentación
 # ==========================================================================
-# 
+#
 # Este archivo define alias para todos los scripts fzf disponibles.
 # Cada alias incluye documentación sobre su propósito y uso.
 #
@@ -14,9 +14,9 @@
 # ==========================================================================
 
 # Verificar que fzf esté disponible
-if ! command -v fzf &> /dev/null; then
-    echo "⚠️  fzf no está instalado. Los scripts fzf no estarán disponibles."
-    return 0
+if ! command -v fzf &>/dev/null; then
+	echo "⚠️  fzf no está instalado. Los scripts fzf no estarán disponibles."
+	return 0
 fi
 
 # ==========================================================================
@@ -34,7 +34,7 @@ source <(fzf --zsh)
 # Conectar a un contenedor en ejecución
 # Uso: cc
 # Descripción: Muestra lista fuzzy de contenedores y conecta al seleccionado
-alias cc='$ZSH_DIR/fzf/container-connect.sh'
+alias cc='$ZSH_DIR/fzf/container-connect.bash'
 
 # ==========================================================================
 # GIT
@@ -43,17 +43,17 @@ alias cc='$ZSH_DIR/fzf/container-connect.sh'
 # Checkout de rama con selector fuzzy
 # Uso: gco
 # Descripción: Muestra ramas disponibles y cambia a la seleccionada
-alias gco='$ZSH_DIR/fzf/git-checkout.sh'
+alias gco='$ZSH_DIR/fzf/git-checkout.bash'
 
-# Eliminar ramas con selector fuzzy  
+# Eliminar ramas con selector fuzzy
 # Uso: gbd
 # Descripción: Muestra ramas locales y elimina las seleccionadas
-alias gbd='$ZSH_DIR/fzf/git-branch-delete.sh'
+alias gbd='$ZSH_DIR/fzf/git-branch-delete.bash'
 
 # Ver historial de commits con selector fuzzy
 # Uso: glog
 # Descripción: Navega por el historial de commits con preview
-alias glog='$ZSH_DIR/fzf/git-log.sh'
+alias glog='$ZSH_DIR/fzf/git-log.bash'
 
 # ==========================================================================
 # INFORMACIÓN

@@ -24,3 +24,17 @@ debug:
 # Desplegar en host WSL
 wsl:
 	nixos-rebuild switch --flake .#wsl --use-remote-sudo
+
+############################################################################
+#
+# Comandos de desarrollo y linting
+#
+############################################################################
+
+# Ejecutar todos los checks de calidad (linting, formateo, etc.)
+check:
+	nix develop ./dev -c pre-commit run --all-files
+
+# Entrar al entorno de desarrollo (solo para debugging)
+dev:
+	nix develop ./dev

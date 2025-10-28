@@ -52,8 +52,8 @@ alias gm='git merge'
 alias gt='git ls-tree -r master --name-only'
 
 # Aliases de log - formato visual mejorado
-# glg: --graph (gráfico ASCII de ramas) + --abbrev-commit (hash corto) + 
-#      --decorate (nombres de ramas/tags) + --format (formato personalizado) + 
+# glg: --graph (gráfico ASCII de ramas) + --abbrev-commit (hash corto) +
+#      --decorate (nombres de ramas/tags) + --format (formato personalizado) +
 #      --all (todas las ramas)
 alias glg="git log \
     --graph \
