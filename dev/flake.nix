@@ -22,6 +22,14 @@
           pre-commit-check = git-hooks.lib.${system}.run {
             src = ./..;  # Apunta al directorio padre (nixos-config)
             hooks = {
+              # === Hooks generales disponibles en git-hooks.nix ===
+              check-added-large-files.enable = true;  # Verifica archivos grandes
+              check-case-conflicts.enable = true;     # Verifica conflictos de nombres de archivo
+              check-merge-conflicts.enable = true;    # Verifica conflictos de fusión
+              check-yaml.enable = true;               # Verifica sintaxis YAML
+              end-of-file-fixer.enable = true;        # Añade newline al final de archivos
+              
+              # === Hooks específicos para shell ===
               # Formateo para archivos zsh
               shfmt = {
                 enable = true;
