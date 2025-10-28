@@ -51,6 +51,9 @@ in {
             # nvim-web-devicons    -- dependencia de neo-tree
             # nui-nvim             -- dependencia de neo-tree
           ];
+          sessions = with pkgs.vimPlugins; [
+            auto-session           # guardado automático de sesiones por proyecto
+          ];
         };
 
         # librerías compartidas
@@ -86,6 +89,7 @@ in {
           categories = {
             general = true;
             neotree = true;
+            sessions = true;    # auto-session para gestión de sesiones
           };
           # información extra para lua
           extra = {
