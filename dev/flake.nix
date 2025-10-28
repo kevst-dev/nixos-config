@@ -29,6 +29,37 @@
               check-yaml.enable = true;               # Verifica sintaxis YAML
               end-of-file-fixer.enable = true;        # Añade newline al final de archivos
               
+              # === Hooks para Lua/Neovim ===
+              # Lua Language Server (nativo en git-hooks.nix)
+              lua-ls = {
+                enable = true;
+                settings = {
+                  checklevel = "Warning";
+                  configuration = {
+                    # Configuración específica para Neovim
+                    runtime = {
+                      version = "LuaJIT";
+                    };
+                    workspace = {
+                      library = ["${pkgs.neovim}/share/nvim/runtime/lua"];
+                      checkThirdParty = false;
+                    };
+                    diagnostics = {
+                      globals = ["vim" "nixCats"];
+                    };
+                  };
+                };
+              };
+              
+              # StyLua formatter (hook personalizado)
+              stylua = {
+                enable = true;
+                name = "Format Lua files with StyLua";
+                entry = "${pkgs.stylua}/bin/stylua";
+                files = "\\.lua$";
+                language = "system";
+              };
+              
               # === Hooks específicos para shell ===
               # Formateo para archivos zsh
               shfmt = {
@@ -71,6 +102,10 @@
             buildInputs = with pkgs; [
               # Herramientas básicas
               just
+              
+              # Herramientas para Lua/Neovim
+              stylua
+              lua-language-server
               
               # Herramientas del pre-commit check
             ] ++ pre-commit-check.enabledPackages;

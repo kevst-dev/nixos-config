@@ -1,3 +1,3 @@
 -- Configuración principal de Neovim con nixCats
-require('config')
-require('plugins')
+require("config")
+require("plugins")
