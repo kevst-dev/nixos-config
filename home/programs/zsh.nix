@@ -1,9 +1,8 @@
-{ config, pkgs, ... }: 
-{
+{pkgs, ...}: {
   # ==========================================================================
   # Configuración híbrida de Zsh
   # ==========================================================================
-  # 
+  #
   # ENFOQUE HÍBRIDO:
   # - Home Manager gestiona plugins y configuración base
   # - Dotfiles personalizados mantienen estructura modular
@@ -17,7 +16,7 @@
 
   programs.zsh = {
     enable = true;
-    
+
     # Plugins gestionados por Home Manager
     plugins = [
       {
@@ -70,5 +69,4 @@
       [[ -f "$ZSH_DIR/.zshrc" ]] && source "$ZSH_DIR/.zshrc"
     '';
   };
-
 }

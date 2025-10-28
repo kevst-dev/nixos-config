@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+_: {
   # Zoxide - navegación inteligente de directorios
   programs.zoxide = {
     enable = true;

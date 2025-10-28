@@ -10,12 +10,17 @@
     };
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
-    
+
     # nixCats para configuración de Neovim
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-wsl, nixCats, ... }@inputs: {
+  outputs = {
+    nixpkgs,
+    home-manager,
+    nixos-wsl,
+    ...
+  } @ inputs: {
     # Configuración para WSL
     nixosConfigurations = {
       wsl = let
@@ -28,15 +33,17 @@
 
           modules = [
             ./hosts/wsl/default.nix
-            nixos-wsl.nixosModules.wsl  # Módulo para entornos WSL
-            
+            nixos-wsl.nixosModules.wsl # Módulo para entornos WSL
+
             # Integración de Home Manager
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/${username}/home.nix;
-              home-manager.extraSpecialArgs = inputs // specialArgs // { inherit inputs; };
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username} = import ./users/${username}/home.nix;
+                extraSpecialArgs = inputs // specialArgs // {inherit inputs;};
+              };
             }
           ];
         };

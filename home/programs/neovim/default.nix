@@ -1,5 +1,10 @@
-{ config, lib, inputs, ... }: let
-  utils = inputs.nixCats.utils;
+{
+  config,
+  lib,
+  inputs,
+  ...
+}: let
+  inherit (inputs.nixCats) utils;
 in {
   imports = [
     inputs.nixCats.homeModule
@@ -8,57 +13,56 @@ in {
     # namespace para las opciones de nixCats
     nixCats = {
       enable = true;
-      
+
       # overlays estándar para plugins
       addOverlays = [
         (utils.standardPluginOverlay inputs)
       ];
-      
+
       # nombre del paquete a instalar
-      packageNames = [ "myHomeModuleNvim" ];
+      packageNames = ["myHomeModuleNvim"];
 
       # ruta al directorio de configuración de nvim
       luaPath = ../../dotfiles/nvim;
 
       # importar categorías de diferentes módulos
-      categoryDefinitions.replace = ({ pkgs, settings, categories, extra, name, mkPlugin, ... }@packageDef: 
+      categoryDefinitions.replace = {pkgs, ...}:
         lib.recursiveUpdate
-          (import ./ui.nix { inherit pkgs; })
-          {
-            # dependencias en runtime (para futuras herramientas)
-            lspsAndRuntimeDeps = {
-              general = with pkgs; [ ];
-            };
+        (import ./ui.nix {inherit pkgs;})
+        {
+          # dependencias en runtime (para futuras herramientas)
+          lspsAndRuntimeDeps = {
+            general = with pkgs; [];
+          };
 
-            # librerías compartidas
-            sharedLibraries = {
-              general = with pkgs; [ ];
-            };
+          # librerías compartidas
+          sharedLibraries = {
+            general = with pkgs; [];
+          };
 
-            # variables de entorno
-            environmentVariables = {
-              # sin variables por ahora
-            };
+          # variables de entorno
+          environmentVariables = {
+            # sin variables por ahora
+          };
 
-            # librerías de python
-            python3.libraries = {
-              # sin python por ahora
-            };
+          # librerías de python
+          python3.libraries = {
+            # sin python por ahora
+          };
 
-            # argumentos extra del wrapper
-            extraWrapperArgs = {
-              # sin argumentos extra por ahora
-            };
-          }
-      );
+          # argumentos extra del wrapper
+          extraWrapperArgs = {
+            # sin argumentos extra por ahora
+          };
+        };
 
       # definir paquetes específicos
       packageDefinitions.replace = {
-        myHomeModuleNvim = { pkgs, name, ... }: {
+        myHomeModuleNvim = _: {
           settings = {
-            wrapRc = false;  # permitir symlink en lugar de bundle
+            wrapRc = false; # permitir symlink en lugar de bundle
             unwrappedCfgPath = "${config.home.homeDirectory}/nixos-config/dotfiles/nvim";
-            aliases = [ "vim" "nvim" ];
+            aliases = ["vim" "nvim"];
           };
           # categorías a activar
           categories = {
@@ -67,7 +71,7 @@ in {
             neotree = true;
             sessions = true;
             colorscheme = true;
-            statusline = true;    # lualine para barra de estado
+            statusline = true; # lualine para barra de estado
           };
           # información extra para lua
           extra = {
