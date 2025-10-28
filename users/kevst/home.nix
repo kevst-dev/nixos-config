@@ -19,7 +19,7 @@
     ../../home/programs/zoxide.nix
     
     # Editor
-    ../../home/programs/neovim.nix
+    ../../home/programs/neovim
   ];
 
   programs.git = {
