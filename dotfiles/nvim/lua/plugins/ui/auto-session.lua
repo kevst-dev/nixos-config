@@ -10,7 +10,16 @@ require("lze").load({
 				auto_restore_enabled = true, -- restaurar sesión automáticamente al abrir
 
 				-- directorios donde NO crear sesiones (evita sesiones en home, downloads, etc)
-				auto_session_suppress_dirs = { "~/", "~/Downloads", "~/Documents", "/" },
+				-- IMPORTANTE: incluir "/" para evitar sesiones del directorio raíz
+				auto_session_suppress_dirs = {
+					"~/",
+					"~/Downloads",
+					"~/Documents",
+					"~/Desktop",
+					"/", -- directorio raíz
+					"/tmp", -- directorio temporal
+					"/var/tmp", -- otro directorio temporal
+				},
 
 				-- integración con neotree (cerrar antes de guardar, abrir después de restaurar)
 				pre_save_cmds = { "Neotree close" },

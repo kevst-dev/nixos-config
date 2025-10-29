@@ -28,7 +28,7 @@
     ];
     statusline = with pkgs.vimPlugins; [
       lualine-nvim # barra de estado moderna
-      nvim-web-devicons # dependencia de neo-tree
+      nvim-web-devicons # dependencia de lualine
     ];
   };
 }

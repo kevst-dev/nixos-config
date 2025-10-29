@@ -28,7 +28,12 @@ in {
       # importar categorías de diferentes módulos
       categoryDefinitions.replace = {pkgs, ...}:
         lib.recursiveUpdate
-        (import ./ui.nix {inherit pkgs;})
+        (
+          # combinación de categorías desde distintos módulos
+          lib.recursiveUpdate
+          (import ./ui.nix {inherit pkgs;})
+          (import ./syntax.nix {inherit pkgs;})
+        )
         {
           # dependencias en runtime (para futuras herramientas)
           lspsAndRuntimeDeps = {
@@ -72,6 +77,8 @@ in {
             sessions = true;
             colorscheme = true;
             statusline = true; # lualine para barra de estado
+            # Syntaxis y análisis de código
+            syntax = true;
           };
           # información extra para lua
           extra = {

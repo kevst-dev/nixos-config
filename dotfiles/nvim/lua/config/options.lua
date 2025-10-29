@@ -48,8 +48,8 @@ options.linebreak = true -- Romper en palabras, no caracteres
 options.textwidth = 80 -- Ancho máximo de línea
 
 -- Caracteres especiales
-options.list = true -- Mostrar caracteres invisibles
-options.listchars = "tab:\\ ,trail:-" -- Cómo mostrar tabs y espacios
+options.list = false -- No mostrar caracteres invisibles
+-- options.listchars = "tab:→ ,trail:·,nbsp:⎵" -- Deshabilitado
 
 -- ==========================================================================
 -- BÚSQUEDA
@@ -68,6 +68,13 @@ options.hidden = true -- Permitir buffers ocultos sin guardar
 options.swapfile = false -- No crear archivos .swp
 options.undofile = true -- Mantener historial de deshacer
 options.autowrite = true -- Guardar automáticamente al cambiar buffer
+
+-- Configuración de sesiones
+-- PROBLEMA: Los plugins de sessions pueden restaurar siempre el directorio raíz (/)
+-- SOLUCIÓN: Usar 'curdir' en lugar de 'sesdir' para preservar el directorio actual
+-- 'curdir' = guarda el directorio desde donde se abrió nvim
+-- 'sesdir' = cambiaría al directorio donde está el archivo de sesión (causa problemas)
+options.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 -- ==========================================================================
 -- SISTEMA Y INTEGRACIÓN
