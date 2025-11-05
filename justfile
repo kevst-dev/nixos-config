@@ -38,3 +38,21 @@ check:
 # Entrar al entorno de desarrollo (solo para debugging)
 dev:
 	nix develop ./dev
+
+############################################################################
+#
+# Comandos de testing
+#
+############################################################################
+
+# Ejecutar todos los tests unitarios
+test-unit-all:
+	cd tests/unit && nix flake check -L
+
+# Ejecutar un test específico (ej: just test-unit test-git)
+test-unit test:
+	cd tests/unit && nix build .#{{test}} -L
+
+# Listar tests disponibles
+test-list:
+	cd tests/unit && nix flake show
