@@ -22,6 +22,9 @@
           test-git = pkgs.testers.runNixOSTest (import ./tests-git.nix {
             inherit (inputs) home-manager;
           });
+          test-starship = pkgs.testers.runNixOSTest (import ./tests-starship.nix {
+            inherit (inputs) home-manager;
+          });
         };
       };
     };
