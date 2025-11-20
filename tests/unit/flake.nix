@@ -16,8 +16,8 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux"];
       perSystem = {pkgs, ...}: {
-        packages = {
-          # Importar todos los tests que tengas
+        checks = {
+          # Tests ejecutados por nix flake check
           test-example = pkgs.testers.runNixOSTest ./tests-example.nix;
           test-git = pkgs.testers.runNixOSTest (import ./tests-git.nix {
             inherit (inputs) home-manager;
@@ -25,6 +25,31 @@
           test-starship = pkgs.testers.runNixOSTest (import ./tests-starship.nix {
             inherit (inputs) home-manager;
           });
+          test-zsh = pkgs.testers.runNixOSTest (import ./tests-zsh.nix {
+            inherit (inputs) home-manager;
+          });
+        };
+
+        packages = {
+          # Script para ejecutar todos los tests con output
+          run-all-tests = pkgs.writeShellScriptBin "run-all-tests" ''
+            set -e
+            echo "🚀 Ejecutando todos los tests..."
+
+            echo "📋 Test: example"
+            nix build .#checks.x86_64-linux.test-example -L -v --print-build-logs --rebuild
+
+            echo "📋 Test: git"
+            nix build .#checks.x86_64-linux.test-git -L -v --print-build-logs --rebuild
+
+            echo "📋 Test: starship"
+            nix build .#checks.x86_64-linux.test-starship -L -v --print-build-logs --rebuild
+
+            echo "📋 Test: zsh"
+            nix build .#checks.x86_64-linux.test-zsh -L -v --print-build-logs --rebuild
+
+            echo "✅ Todos los tests completados exitosamente!"
+          '';
         };
       };
     };

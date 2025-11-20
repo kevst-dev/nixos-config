@@ -47,11 +47,12 @@ dev:
 
 # Ejecutar todos los tests unitarios
 test-unit-all:
-	cd tests/unit && nix flake check -L
+	cd tests/unit && nix run .#run-all-tests
 
 # Ejecutar un test específico (ej: just test-unit test-git)
 test-unit test:
-	cd tests/unit && nix build .#{{test}} -L
+	cd tests/unit && rm -rf result*
+	cd tests/unit && nix build .#checks.x86_64-linux.{{test}} -L -v --rebuild
 
 # Listar tests disponibles
 test-list:
