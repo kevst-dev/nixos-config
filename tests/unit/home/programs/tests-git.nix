@@ -18,7 +18,7 @@
         useGlobalPkgs = true;
         useUserPackages = true;
         users.testuser = {
-          imports = [../../home/programs/git.nix];
+          imports = [../../../../home/programs/git.nix];
           home.stateVersion = "24.05";
           programs.git = {
             userName = "kevst";

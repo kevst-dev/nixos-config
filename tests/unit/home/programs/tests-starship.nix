@@ -18,7 +18,7 @@
         useGlobalPkgs = true;
         useUserPackages = true;
         users.testuser = {
-          imports = [../../home/programs/starship.nix];
+          imports = [../../../../home/programs/starship.nix];
           home.stateVersion = "24.05";
         };
       };

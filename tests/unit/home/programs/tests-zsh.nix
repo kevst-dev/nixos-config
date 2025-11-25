@@ -22,7 +22,7 @@
         useGlobalPkgs = true;
         useUserPackages = true;
         users.testuser = {
-          imports = [../../home/programs/zsh.nix];
+          imports = [../../../../home/programs/zsh.nix];
           home.stateVersion = "24.05";
         };
       };

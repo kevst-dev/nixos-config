@@ -19,13 +19,19 @@
         checks = {
           # Tests ejecutados por nix flake check
           test-example = pkgs.testers.runNixOSTest ./tests-example.nix;
-          test-git = pkgs.testers.runNixOSTest (import ./tests-git.nix {
+          test-git = pkgs.testers.runNixOSTest (import ./home/programs/tests-git.nix {
             inherit (inputs) home-manager;
           });
-          test-starship = pkgs.testers.runNixOSTest (import ./tests-starship.nix {
+          test-starship = pkgs.testers.runNixOSTest (import ./home/programs/tests-starship.nix {
             inherit (inputs) home-manager;
           });
-          test-zsh = pkgs.testers.runNixOSTest (import ./tests-zsh.nix {
+          test-zsh = pkgs.testers.runNixOSTest (import ./home/programs/tests-zsh.nix {
+            inherit (inputs) home-manager;
+          });
+          test-zoxide = pkgs.testers.runNixOSTest (import ./home/programs/tests-zoxide.nix {
+            inherit (inputs) home-manager;
+          });
+          test-neovim = pkgs.testers.runNixOSTest (import ./home/programs/tests-neovim.nix {
             inherit (inputs) home-manager;
           });
         };
@@ -47,6 +53,12 @@
 
             echo "📋 Test: zsh"
             nix build .#checks.x86_64-linux.test-zsh -L -v --print-build-logs --rebuild
+
+            echo "📋 Test: zoxide"
+            nix build .#checks.x86_64-linux.test-zoxide -L -v --print-build-logs --rebuild
+
+            echo "📋 Test: neovim"
+            nix build .#checks.x86_64-linux.test-neovim -L -v --print-build-logs --rebuild
 
             echo "✅ Todos los tests completados exitosamente!"
           '';

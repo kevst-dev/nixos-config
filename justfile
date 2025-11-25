@@ -12,6 +12,11 @@ default:
 deploy:
 	nixos-rebuild switch --flake . --use-remote-sudo
 
+# Actualizar inputs del flake y desplegar configuración
+update:
+	nix flake update
+	nixos-rebuild switch --flake . --use-remote-sudo
+
 debug:
   nixos-rebuild switch --flake . --use-remote-sudo --show-trace --verbose
 

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   # ==========================================================================
   # Configuración híbrida de Zsh
   # ==========================================================================
@@ -7,11 +7,11 @@
   # - Home Manager gestiona plugins y configuración base
   # - Dotfiles personalizados mantienen estructura modular
   # - envExtra carga la ruta del zsh personalizado
-  # - initExtra carga configuración personalizada al final
+  # - initContent carga configuración personalizada al final
   #
   # ORDEN DE CARGA:
   # 1. Home Manager: configuración base + plugins
-  # 2. initExtra: carga nuestra configuración personalizada
+  # 2. initContent: carga nuestra configuración personalizada
   # ==========================================================================
 
   programs.zsh = {
@@ -64,7 +64,7 @@
     '';
 
     # Cargar configuración personalizada después de cargar los plugins
-    initExtra = ''
+    initContent = lib.mkOrder 1000 ''
       # Cargar nuestra configuración modular personalizada
       [[ -f "$ZSH_DIR/.zshrc" ]] && source "$ZSH_DIR/.zshrc"
     '';
