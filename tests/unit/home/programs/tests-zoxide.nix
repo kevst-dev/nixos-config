@@ -8,7 +8,7 @@
 
       # Instalar zoxide a nivel sistema para verificación
       environment.systemPackages = [pkgs.zoxide];
-      
+
       # Configurar zsh para que zoxide funcione
       programs.zsh.enable = true;
 
@@ -24,7 +24,7 @@
         users.testuser = {
           imports = [
             ../../../../home/programs/zoxide.nix
-            ../../../../home/programs/zsh.nix  # zoxide necesita zsh
+            ../../../../home/programs/zsh.nix # zoxide necesita zsh
           ];
           home.stateVersion = "24.05";
         };
@@ -53,15 +53,15 @@
     print("   ✓ Integración con zsh habilitada")
 
     print("🧪 Probando funcionalidad básica de zoxide...")
-    
+
     # Crear algunos directorios para probar
     machine.succeed("su - testuser -c 'mkdir -p /tmp/test-zoxide/{project1,project2,documents}'")
-    
+
     # Navegar a los directorios para que zoxide los registre
     machine.succeed("su - testuser -c 'cd /tmp/test-zoxide/project1 && pwd'")
     machine.succeed("su - testuser -c 'cd /tmp/test-zoxide/project2 && pwd'")
     machine.succeed("su - testuser -c 'cd /tmp/test-zoxide/documents && pwd'")
-    
+
     print("   ✓ Directorios de prueba creados y visitados")
 
     # Verificar que zoxide puede agregar directorios
@@ -78,7 +78,7 @@
     print("   ✓ Zoxide query funciona correctamente")
 
     print("📁 Verificando funcionalidad de zoxide...")
-    
+
     # Verificar que zoxide init funciona (esto configuraría z y zi)
     machine.succeed("su - testuser -c 'zoxide init --help'")
     print("   ✓ Zoxide init funciona correctamente")

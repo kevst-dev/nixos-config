@@ -2,11 +2,7 @@
   name = "Neovim configuration test";
 
   nodes = {
-    machine = {
-      pkgs,
-      lib,
-      ...
-    }: {
+    machine = {pkgs, ...}: {
       # Importar Home Manager como módulo de NixOS
       imports = [home-manager.nixosModules.home-manager];
 

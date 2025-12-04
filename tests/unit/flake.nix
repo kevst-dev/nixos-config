@@ -15,7 +15,17 @@
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux"];
-      perSystem = {pkgs, ...}: {
+      perSystem = {
+        pkgs,
+        system,
+        ...
+      }: let
+        # pkgs con allowUnfree para tests que lo necesiten
+        pkgsUnfree = import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      in {
         checks = {
           # Tests ejecutados por nix flake check
           test-example = pkgs.testers.runNixOSTest ./tests-example.nix;
@@ -32,6 +42,9 @@
             inherit (inputs) home-manager;
           });
           test-neovim = pkgs.testers.runNixOSTest (import ./home/programs/tests-neovim.nix {
+            inherit (inputs) home-manager;
+          });
+          test-common = pkgsUnfree.testers.runNixOSTest (import ./home/programs/tests-common.nix {
             inherit (inputs) home-manager;
           });
         };
@@ -59,6 +72,9 @@
 
             echo "📋 Test: neovim"
             nix build .#checks.x86_64-linux.test-neovim -L -v --print-build-logs --rebuild
+
+            echo "📋 Test: common"
+            nix build .#checks.x86_64-linux.test-common -L -v --print-build-logs --rebuild
 
             echo "✅ Todos los tests completados exitosamente!"
           '';
