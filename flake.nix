@@ -40,17 +40,32 @@
         inherit system;
         specialArgs = specialArgs // {inherit inputs;};
 
+        # CONSTRUCCIÓN DE MÓDULOS
+        # El operador ++ concatena (une) listas en Nix
+        # Ejemplo: [1, 2] ++ [3, 4] → [1, 2, 3, 4]
+        #
+        # Estamos construyendo una lista de módulos uniendo 3 bloques:
+        # BLOQUE 1 (siempre) ++ BLOQUE 2 (condicional) ++ BLOQUE 3 (siempre)
+
         modules =
+          # BLOQUE 1: Configuración base del host (SIEMPRE se incluye)
+          # Contiene la config específica del sistema para este host
           [
             ./hosts/${hostname}/default.nix
           ]
+
+          # BLOQUE 2: Módulo de WSL (CONDICIONAL - solo si includeWSL = true)
+          # Para WSL: [nixos-wsl.nixosModules.wsl]
+          # Para otros hosts: [] (lista vacía)
           ++ (
             if includeWSL
             then [nixos-wsl.nixosModules.wsl]
             else []
           )
+
+          # BLOQUE 3: Configuración de Home Manager (SIEMPRE se incluye)
+          # Gestiona la configuración a nivel de usuario
           ++ [
-            # Integración de Home Manager
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -61,6 +76,7 @@
               };
             }
           ];
+
       };
   in {
     # Configuraciones por host
