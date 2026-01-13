@@ -55,22 +55,22 @@
             echo "🚀 Ejecutando todos los tests..."
 
             echo "📋 Test: common"
-            nix build .#checks.x86_64-linux.test-common -L -v --print-build-logs --rebuild
+            nix build .#checks.x86_64-linux.test-common -L -v --print-build-logs
 
             echo "📋 Test: git"
-            nix build .#checks.x86_64-linux.test-git -L -v --print-build-logs --rebuild
+            nix build .#checks.x86_64-linux.test-git -L -v --print-build-logs
 
             echo "📋 Test: starship"
-            nix build .#checks.x86_64-linux.test-starship -L -v --print-build-logs --rebuild
+            nix build .#checks.x86_64-linux.test-starship -L -v --print-build-logs
 
             echo "📋 Test: zsh"
-            nix build .#checks.x86_64-linux.test-zsh -L -v --print-build-logs --rebuild
+            nix build .#checks.x86_64-linux.test-zsh -L -v --print-build-logs
 
             echo "📋 Test: zoxide"
-            nix build .#checks.x86_64-linux.test-zoxide -L -v --print-build-logs --rebuild
+            nix build .#checks.x86_64-linux.test-zoxide -L -v --print-build-logs
 
             echo "📋 Test: neovim"
-            nix build .#checks.x86_64-linux.test-neovim -L -v --print-build-logs --rebuild
+            nix build .#checks.x86_64-linux.test-neovim -L -v --print-build-logs
 
             echo "✅ Todos los tests completados exitosamente!"
           '';
