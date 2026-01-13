@@ -53,7 +53,6 @@
           [
             ./hosts/${hostname}/default.nix
           ]
-
           # BLOQUE 2: Módulo de WSL (CONDICIONAL - solo si includeWSL = true)
           # Para WSL: [nixos-wsl.nixosModules.wsl]
           # Para otros hosts: [] (lista vacía)
@@ -62,7 +61,6 @@
             then [nixos-wsl.nixosModules.wsl]
             else []
           )
-
           # BLOQUE 3: Configuración de Home Manager (SIEMPRE se incluye)
           # Gestiona la configuración a nivel de usuario
           ++ [
@@ -76,7 +74,6 @@
               };
             }
           ];
-
       };
   in {
     # Configuraciones por host
