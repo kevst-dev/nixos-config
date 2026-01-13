@@ -84,7 +84,11 @@
         includeWSL = true;
       };
 
-      # TODO: Agregar turing después de validar que WSL funciona
+      turing = mkHost {
+        hostname = "turing";
+        userConfig = ./users/kevst/turing.nix; # Config específica de servidor
+        includeWSL = false;
+      };
     };
   };
 }

@@ -34,6 +34,10 @@ debug:
 wsl:
 	{{rebuild_cmd}} --flake .#wsl
 
+# Desplegar en servidor Turing
+turing:
+	{{rebuild_cmd}} --flake .#turing
+
 ############################################################################
 #
 # Comandos de desarrollo y linting
@@ -61,7 +65,7 @@ test-unit-all:
 # Ejecutar un test específico (ej: just test-unit test-git)
 test-unit test:
 	cd tests/unit && rm -rf result*
-	cd tests/unit && nix build .#checks.x86_64-linux.{{test}} -L -v --rebuild
+	cd tests/unit && nix build .#checks.x86_64-linux.{{test}} -L -v
 
 # Listar tests disponibles
 test-list:
