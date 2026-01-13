@@ -1,3 +1,6 @@
+# Reconstruye y activa el sistema sin reboot
+rebuild_cmd := "nixos-rebuild switch --use-remote-sudo"
+
 # Muestra la lista de commandos disponibles
 default:
     @just --list
@@ -10,15 +13,16 @@ default:
 
 # Construir y cambiar a la configuración NixOS de la máquina actual
 deploy:
-	nixos-rebuild switch --flake . --use-remote-sudo
+	{{rebuild_cmd}} --flake .
 
 # Actualizar inputs del flake y desplegar configuración
 update:
 	nix flake update
-	nixos-rebuild switch --flake . --use-remote-sudo
+	nix flake update --flake tests/unit
+	{{rebuild_cmd}} --flake .
 
 debug:
-  nixos-rebuild switch --flake . --use-remote-sudo --show-trace --verbose
+	{{rebuild_cmd}} --flake . --show-trace --verbose
 
 ############################################################################
 #
@@ -28,7 +32,7 @@ debug:
 
 # Desplegar en host WSL
 wsl:
-	nixos-rebuild switch --flake .#wsl --use-remote-sudo
+	{{rebuild_cmd}} --flake .#wsl
 
 ############################################################################
 #
