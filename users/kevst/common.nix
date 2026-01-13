@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   ##################################################################################################################
   #
   # Configuración compartida de Home Manager para kevst
@@ -14,8 +13,10 @@
 
   # Identidad de git (compartida entre todos los hosts)
   programs.git = {
-    userName = "kevst";
-    userEmail = "kevinca100711@gmail.com";
+    settings = {
+      user.name = "kevst";
+      user.email = "kevinca100711@gmail.com";
+    };
   };
 
   # Paquetes comunes a todos los hosts
