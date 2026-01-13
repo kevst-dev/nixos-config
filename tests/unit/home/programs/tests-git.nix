@@ -21,8 +21,10 @@
           imports = [../../../../home/programs/git.nix];
           home.stateVersion = "24.05";
           programs.git = {
-            userName = "kevst";
-            userEmail = "kevinca100711@gmail.com";
+            settings = {
+              user.name = "kevst";
+              user.email = "kevinca100711@gmail.com";
+            };
           };
         };
       };

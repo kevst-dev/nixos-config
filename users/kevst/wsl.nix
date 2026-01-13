@@ -1,31 +1,25 @@
-{...}: {
+{ ... }:
+{
   ##################################################################################################################
   #
-  # Toda la configuración de Home Manager de Kevst
+  # Configuración de Home Manager para kevst en WSL
+  # Setup completo de desarrollo
   #
   ##################################################################################################################
 
   imports = [
-    ../../home/core.nix
+    # Config compartida (git, core, paquetes básicos)
+    ./common.nix
 
+    # Paquetes de desarrollo
     ../../home/programs/common.nix
 
-    # Configuración básica del stack
-    ../../home/programs/git.nix
-
-    # Terminal y shell
+    # Terminal y shell avanzado
     ../../home/programs/zsh.nix
     ../../home/programs/starship.nix
     ../../home/programs/zoxide.nix
 
-    # Editor
+    # Editor completo
     ../../home/programs/neovim
   ];
-
-  programs.git = {
-    settings = {
-      user.name = "kevst";
-      user.email = "kevinca100711@gmail.com";
-    };
-  };
 }

@@ -3,7 +3,7 @@
   username,
   ...
 }: {
-  imports = [../../modules/system.nix];
+  imports = [../../modules/common/system.nix];
 
   # Configuración específica de WSL
   wsl.enable = true;

@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -28,7 +28,6 @@
       in {
         checks = {
           # Tests ejecutados por nix flake check
-          test-example = pkgs.testers.runNixOSTest ./tests-example.nix;
           test-git = pkgs.testers.runNixOSTest (import ./home/programs/tests-git.nix {
             inherit (inputs) home-manager;
           });
@@ -55,8 +54,8 @@
             set -e
             echo "🚀 Ejecutando todos los tests..."
 
-            echo "📋 Test: example"
-            nix build .#checks.x86_64-linux.test-example -L -v --print-build-logs --rebuild
+            echo "📋 Test: common"
+            nix build .#checks.x86_64-linux.test-common -L -v --print-build-logs --rebuild
 
             echo "📋 Test: git"
             nix build .#checks.x86_64-linux.test-git -L -v --print-build-logs --rebuild
@@ -72,9 +71,6 @@
 
             echo "📋 Test: neovim"
             nix build .#checks.x86_64-linux.test-neovim -L -v --print-build-logs --rebuild
-
-            echo "📋 Test: common"
-            nix build .#checks.x86_64-linux.test-common -L -v --print-build-logs --rebuild
 
             echo "✅ Todos los tests completados exitosamente!"
           '';
