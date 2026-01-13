@@ -13,6 +13,10 @@
   # Configurar zsh como shell por defecto para el usuario
   users.users.${username}.shell = pkgs.zsh;
 
-  # Versión de NixOS para compatibilidad de datos con estado
+  # stateVersion es la "Versión de Instalación Original" de NixOS
+  # - Marca de tiempo de cuándo instalaste el sistema por primera vez
+  # - NUNCA lo cambies (incluso si actualizas a versiones nuevas)
+  # - Solo existe para compatibilidad con datos con estado
+  # - Cambiarlo puede causar pérdida de datos
   system.stateVersion = "25.05";
 }

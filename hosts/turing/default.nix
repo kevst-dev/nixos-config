@@ -8,8 +8,27 @@
   # Configuración específica del servidor Turing
   networking.hostName = "turing";
 
-  # Configurar zsh como shell por defecto para el usuario
-  users.users.${username}.shell = pkgs.zsh;
+  # Configuración del usuario
+  users.users.${username} = {
+    isNormalUser = true;
+    shell = pkgs.zsh;
+    group = username;
+    extraGroups = ["wheel" "networkmanager" "docker"];
+  };
+
+  users.groups.${username} = {};
+
+  # Configuración de boot (GRUB)
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda"; # Ajustar según el disco del servidor
+  };
+
+  # Sistema de archivos raíz (ajustar según configuración real)
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+  };
 
   # Habilitar SSH para acceso remoto
   services.openssh = {
@@ -37,6 +56,10 @@
     ];
   };
 
-  # Versión de NixOS para compatibilidad de datos con estado
-  system.stateVersion = "25.05";
+  # stateVersion es la "Versión de Instalación Original" de NixOS
+  # - Marca de tiempo de cuándo instalaste el sistema por primera vez
+  # - NUNCA lo cambies (incluso si actualizas a versiones nuevas)
+  # - Solo existe para compatibilidad con datos con estado
+  # - Cambiarlo puede causar pérdida de datos
+  system.stateVersion = "25.11"; # Turing es instalación nueva (2026-01)
 }
