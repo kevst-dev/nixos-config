@@ -13,7 +13,7 @@ alias la='ls -la'
 # Reemplazo de 'cd' con 'zoxide'
 
 [[ -x "$(command -v eza)" ]] && eval "$(zoxide init zsh)" # habilitar zoxide
-[[ -x "$(command -v eza)" ]] && alias cd='z'
+# [[ -x "$(command -v eza)" ]] && alias cd='z', ya no lo reemplazamos para mantener compatibilidad
 
 # =============================================================================
 # Aliases de Git
