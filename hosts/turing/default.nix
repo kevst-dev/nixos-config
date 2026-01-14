@@ -3,7 +3,10 @@
   username,
   ...
 }: {
-  imports = [../../modules/common/system.nix];
+  imports = [
+    ../../modules/common/system.nix
+    ./hardware-configuration.nix
+  ];
 
   # Configuración específica del servidor Turing
   networking.hostName = "turing";
@@ -13,22 +16,14 @@
     isNormalUser = true;
     shell = pkgs.zsh;
     group = username;
-    extraGroups = ["wheel" "networkmanager" "docker"];
+    extraGroups = ["wheel" "networkmanager"];
   };
 
   users.groups.${username} = {};
 
-  # Configuración de boot (GRUB)
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda"; # Ajustar según el disco del servidor
-  };
-
-  # Sistema de archivos raíz (ajustar según configuración real)
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "ext4";
-  };
+  # Configuración de boot (UEFI con systemd-boot)
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # Habilitar SSH para acceso remoto
   services.openssh = {
