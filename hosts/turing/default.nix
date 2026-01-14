@@ -25,6 +25,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Disco adicional para datos (servicios, contenedores)
+  fileSystems."/mnt/nvme0n1" = {
+    device = "/dev/disk/by-uuid/b7d7d1a4-e3e5-49e3-8b5d-de73a6281598";
+    fsType = "ext4";
+  };
+
   # Habilitar SSH para acceso remoto
   services.openssh = {
     enable = true;
