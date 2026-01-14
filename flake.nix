@@ -20,6 +20,7 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     home-manager,
     nixos-wsl,
@@ -89,6 +90,20 @@
         userConfig = ./users/kevst/turing.nix; # Config específica de servidor
         includeWSL = false;
       };
+    };
+
+    # Tests de integración
+    checks.x86_64-linux = let
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+    in {
+      # Test de integración de Turing
+      test-turing = pkgs.testers.runNixOSTest (import ./tests/integration/test-turing.nix {
+        inherit self pkgs;
+        inherit (pkgs) lib;
+      });
     };
   };
 }

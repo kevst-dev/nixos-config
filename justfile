@@ -19,6 +19,7 @@ deploy:
 update:
 	nix flake update
 	nix flake update --flake tests/unit
+	nix flake update --flake tests/integration
 	{{rebuild_cmd}} --flake .
 
 debug:
@@ -54,7 +55,7 @@ dev:
 
 ############################################################################
 #
-# Comandos de testing
+# Comandos de testing - Tests unitarios (componentes individuales)
 #
 ############################################################################
 
@@ -62,11 +63,29 @@ dev:
 test-unit-all:
 	cd tests/unit && nix run .#run-all-tests
 
-# Ejecutar un test específico (ej: just test-unit test-git)
+# Ejecutar un test unitario específico (ej: just test-unit test-git)
 test-unit test:
 	cd tests/unit && rm -rf result*
 	cd tests/unit && nix build .#checks.x86_64-linux.{{test}} -L -v
 
-# Listar tests disponibles
-test-list:
+# Listar tests unitarios disponibles
+test-unit-list:
 	cd tests/unit && nix flake show
+
+############################################################################
+#
+# Comandos de testing - Tests de integración (sistemas completos)
+#
+############################################################################
+
+# Ejecutar todos los tests de integración
+test-integration-all:
+	nix flake check -L
+
+# Ejecutar test de integración de Turing
+test-integration-turing:
+	nix build .#checks.x86_64-linux.test-turing -L -v
+
+# Listar tests de integración disponibles
+test-integration-list:
+	nix flake show | grep -A 10 "checks"
