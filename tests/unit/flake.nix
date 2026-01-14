@@ -1,4 +1,3 @@
-# TODO: Es necesario evalaur el tema de los hardware.nix de cada maquina, definir donde ubicarlos
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
