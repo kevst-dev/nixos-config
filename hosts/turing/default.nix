@@ -48,6 +48,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Permitir que Podman rootless use puertos < 1024 (necesario para Traefik)
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 80;
+
   # Disco adicional para datos (servicios, contenedores)
   fileSystems."/mnt/nvme0n1" = {
     device = "/dev/disk/by-uuid/b7d7d1a4-e3e5-49e3-8b5d-de73a6281598";
