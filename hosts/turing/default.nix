@@ -9,7 +9,30 @@
   ];
 
   # Configuración específica del servidor Turing
-  networking.hostName = "turing";
+  networking = {
+    hostName = "turing";
+
+    # Configuración de red estática
+    useDHCP = false;
+    interfaces.enp2s0.ipv4.addresses = [
+      {
+        address = "192.168.20.79";
+        prefixLength = 24;
+      }
+    ];
+    defaultGateway = "192.168.20.1";
+    nameservers = ["192.168.20.1"];
+
+    # Configuración de firewall
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        22 # SSH
+        80 # HTTP
+        443 # HTTPS
+      ];
+    };
+  };
 
   # Configuración del usuario
   users.users.${username} = {
@@ -45,16 +68,6 @@
     enable = true;
     dockerCompat = true; # Alias docker -> podman
     defaultNetwork.settings.dns_enabled = true;
-  };
-
-  # Configuración de firewall
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [
-      22 # SSH
-      80 # HTTP
-      443 # HTTPS
-    ];
   };
 
   # stateVersion es la "Versión de Instalación Original" de NixOS

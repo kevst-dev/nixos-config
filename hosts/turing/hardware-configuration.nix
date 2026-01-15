@@ -13,33 +13,37 @@
 # - Storage: NVMe + AHCI
 # - Boot: UEFI (systemd-boot)
 # - Generado: 2026-01-14
-
-{ config, lib, pkgs, modulesPath, ... }:
-
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  config,
+  lib,
+  modulesPath,
+  ...
+}: {
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
+    initrd.kernelModules = [];
+    kernelModules = [];
+    extraModulePackages = [];
+  };
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b9410063-7088-49a5-a800-e2334e1b13fc";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/b9410063-7088-49a5-a800-e2334e1b13fc";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/BEBD-37AF";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/BEBD-37AF";
+    fsType = "vfat";
+    options = ["fmask=0077" "dmask=0077"];
+  };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/28601dd1-39cf-48f1-becb-9eba9981cbac"; }
-    ];
+  swapDevices = [
+    {device = "/dev/disk/by-uuid/28601dd1-39cf-48f1-becb-9eba9981cbac";}
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

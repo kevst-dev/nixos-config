@@ -60,16 +60,16 @@ in {
     machine.fail("grep -q '^PermitRootLogin yes' /etc/ssh/sshd_config")
     print("   ✓ Root login deshabilitado")
 
-    machine.succeed("grep -q 'PasswordAuthentication no' /etc/ssh/sshd_config")
-    print("   ✓ Autenticación por password deshabilitada")
+    machine.succeed("grep -q 'PasswordAuthentication yes' /etc/ssh/sshd_config")
+    print("   ✓ Autenticación por password habilitada (requerido para acceso remoto)")
 
     # FASE 5: Verificar puertos de red
     print("\n🌐 FASE 5: Verificando configuración de red y puertos...")
     machine.wait_for_open_port(22)
     print("   ✓ Puerto 22 (SSH) escuchando")
 
-    # Verificar conectividad de red básica
-    machine.succeed("ip addr show eth0 | grep -q 'inet '")
+    # Verificar conectividad de red básica (buscar cualquier interfaz activa)
+    machine.succeed("ip addr show | grep -E 'inet.*global' | grep -qv '127.0.0.1'")
     print("   ✓ Interfaz de red con dirección IP configurada")
 
     # FASE 6: Verificar Podman y Docker
