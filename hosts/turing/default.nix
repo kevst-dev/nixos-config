@@ -70,6 +70,11 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
+  # Paquetes para gestión de contenedores
+  environment.systemPackages = with pkgs; [
+    podman-compose # Soporte para docker-compose con Podman
+  ];
+
   # stateVersion es la "Versión de Instalación Original" de NixOS
   # - Marca de tiempo de cuándo instalaste el sistema por primera vez
   # - NUNCA lo cambies (incluso si actualizas a versiones nuevas)
