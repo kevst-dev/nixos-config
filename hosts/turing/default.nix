@@ -41,16 +41,20 @@
     shell = pkgs.zsh;
     group = username;
     extraGroups = ["wheel" "networkmanager"];
+    linger = true; # Permite que servicios del usuario persistan después del logout/reboot
   };
 
   users.groups.${username} = {};
 
   # Configuración de boot (UEFI con systemd-boot)
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Permitir que Podman rootless use puertos < 1024 (necesario para Traefik)
-  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 80;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    # Permitir que Podman rootless use puertos < 1024 (necesario para Traefik)
+    kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 80;
+  };
 
   # Disco adicional para datos (servicios, contenedores)
   fileSystems."/mnt/nvme0n1" = {
