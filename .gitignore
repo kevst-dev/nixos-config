@@ -1,6 +1,7 @@
-CLAUDE.md
-
-# Nix result symlinks
-result
-result-*
-repl-result-*
+ CLAUDE.md
+ AGENTS.md
+ 
+ # Nix result symlinks
+ result
+ result-*
+ repl-result-*
