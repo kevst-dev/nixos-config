@@ -6,6 +6,9 @@
   imports = [
     ../../modules/common/system.nix
     ./hardware-configuration.nix
+
+    # Herramientas a nivel de sistema
+    ../../modules/common/podman.nix
   ];
 
   # Configuración específica del servidor Turing
@@ -77,18 +80,6 @@
       ];
     };
   };
-
-  # Habilitar Podman para contenedores
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true; # Alias docker -> podman
-    defaultNetwork.settings.dns_enabled = true;
-  };
-
-  # Paquetes para gestión de contenedores
-  environment.systemPackages = with pkgs; [
-    podman-compose # Soporte para docker-compose con Podman
-  ];
 
   # stateVersion es la "Versión de Instalación Original" de NixOS
   # - Marca de tiempo de cuándo instalaste el sistema por primera vez
