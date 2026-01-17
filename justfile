@@ -18,8 +18,8 @@ deploy:
 # Actualizar inputs del flake y desplegar configuración
 update:
 	nix flake update
-	nix flake update --flake tests/unit
-	nix flake update --flake tests/integration
+	nix flake update tests/unit
+	nix flake update tests/integration
 	{{rebuild_cmd}} --flake .
 
 debug:

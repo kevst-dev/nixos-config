@@ -15,9 +15,6 @@ alias la='ls -la'
 [[ -x "$(command -v eza)" ]] && eval "$(zoxide init zsh)" # habilitar zoxide
 # [[ -x "$(command -v eza)" ]] && alias cd='z', ya no lo reemplazamos para mantener compatibilidad
 
-# opencode
-alias opencode='podman run -it --rm -v $(pwd):/workspace -v ~/.config/opencode:/root/.config/opencode -w /workspace ghcr.io/anomalyco/opencode'
-
 # =============================================================================
 # Aliases de Git
 # =============================================================================

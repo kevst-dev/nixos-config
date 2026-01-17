@@ -2,10 +2,10 @@
   description = "Configuraciones personales de NixOS - Multi-host";
 
   inputs = {
-    # Fuente oficial del paquete de NixOS, usando la rama nixos-25.11
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    # Fuente oficial del paquete de NixOS, usando la rama unstable
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
