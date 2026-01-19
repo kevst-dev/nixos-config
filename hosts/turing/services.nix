@@ -1,4 +1,4 @@
-{_}: {
+_: {
   # Habilitar SSH para acceso remoto
   services.openssh = {
     enable = true;

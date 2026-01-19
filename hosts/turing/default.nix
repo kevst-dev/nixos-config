@@ -1,4 +1,4 @@
-{...}: {
+_: {
   imports = [
     ../../modules/common/system.nix
     ./hardware-configuration.nix

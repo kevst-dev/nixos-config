@@ -1,4 +1,4 @@
-{_}: {
+_: {
   # Configuración de boot (UEFI con systemd-boot)
   boot = {
     loader = {
