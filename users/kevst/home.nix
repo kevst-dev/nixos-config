@@ -20,6 +20,9 @@
 
     # Editor
     ../../home/programs/neovim
+
+    # Nueva configuración de OpenCode (apunta a dotfiles)
+    ../../home/programs/opencode.nix
   ];
 
   programs.git = {
