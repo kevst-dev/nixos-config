@@ -1,8 +1,4 @@
-{
-  pkgs,
-  username,
-  ...
-}: {
+{...}: {
   imports = [
     ../../modules/common/system.nix
     ./hardware-configuration.nix
@@ -10,22 +6,12 @@
     # Herramientas a nivel de sistema
     ../../modules/common/podman.nix
 
-    # Configuraciones específicas de red del host
+    # Configuraciones específicas del host
     ./networking.nix
+    ./users.nix
   ];
 
   # Configuración específica del servidor Turing
-
-  # Configuración del usuario
-  users.users.${username} = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    group = username;
-    extraGroups = ["wheel" "networkmanager"];
-    linger = true; # Permite que servicios del usuario persistan después del logout/reboot
-  };
-
-  users.groups.${username} = {};
 
   # Configuración de boot (UEFI con systemd-boot)
   boot = {
