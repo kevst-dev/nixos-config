@@ -2,7 +2,7 @@
   description = "Development tools para nixos-config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     git-hooks.url = "github:cachix/git-hooks.nix";
     git-hooks.inputs.nixpkgs.follows = "nixpkgs";
   };

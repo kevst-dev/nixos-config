@@ -22,9 +22,6 @@ update:
 	nix flake update tests/integration
 	{{rebuild_cmd}} --flake .
 
-debug:
-	{{rebuild_cmd}} --flake . --show-trace --verbose
-
 ############################################################################
 #
 # Despliegues específicos por host
