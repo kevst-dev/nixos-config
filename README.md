@@ -1,126 +1,159 @@
-# NixOS Fleet Management - Configuración Personal
+# Configuración Modular de NixOS
 
-Esta configuración gestiona múltiples hosts NixOS usando Colmena para despliegue,
-con Home Manager para configuraciones de usuario.
+Este repositorio contiene una **configuración modular de NixOS basada en flakes**, diseñada para **gestionar múltiples hosts** e integrar **Home Manager** de forma limpia y reutilizable.
 
-## Arquitectura
+El enfoque prioriza:
 
-- **Hosts locales:** wsl (desarrollo en WSL2)
-- **Hosts remotos:** turing (servidor)
-- **Gestión:** Colmena para despliegue, Home Manager para usuarios
-- **Testing:** VMs NixOS para validación
+* Separación clara de responsabilidades
+* Reutilización de configuraciones entre hosts y usuarios
+* Facilidad de pruebas (tests en VMs)
+* Herramientas de desarrollo y control de calidad (pre-commit)
 
-## Configuración Inicial de un Nuevo Host
+---
 
-### 1. Instalar NixOS en la Máquina
+## Inicio rápido
 
-Antes de conectar un host a Colmena, debe tener NixOS instalado y configurado básicamente.
+1. Clonar el repositorio (habitualmente en `/home/{user}`):
 
-#### Opción A: Instalación Fresca
-1. Descargar imagen NixOS: https://nixos.org/download/
-2. Crear USB bootable: `dd if=nixos.iso of=/dev/sdX bs=4M`
-3. Boot desde USB, seguir instalador gráfico
-4. Configurar particiones, usuario, hostname
-5. Generar configuración inicial: `sudo nixos-generate-config`
-
-#### Opción B: Usando nixos-anywhere (Recomendado para Servidores)
 ```bash
-# Instalar nixos-anywhere
-nix-shell -p nixos-anywhere
-
-# Desplegar a máquina remota (requiere SSH temporal)
-nixos-anywhere --flake .#turing root@turing-ip
+git clone https://github.com/kevst-dev/nixos-config.git
+cd nixos-config
 ```
 
-### 2. Configuración Básica Post-Instalación
+2. Ejecutar las verificaciones de calidad (pre-commit, linting y formato):
 
-Después de instalar NixOS:
-
-1. **Habilitar SSH:**
-   ```nix
-   # En configuration.nix temporal
-   services.openssh.enable = true;
-   users.users.root.openssh.authorizedKeys.keys = [
-     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... tu_clave_pública"
-   ];
-   ```
-
-2. **Aplicar configuración inicial:**
-   ```bash
-   sudo nixos-rebuild switch
-   ```
-
-3. **Verificar conectividad:**
-   ```bash
-   ssh root@turing-ip  # Debe funcionar sin password
-   ```
-
-### 3. Agregar Host a la Colmena
-
-Una vez que la máquina tenga NixOS básico:
-
-1. **Agregar entrada en `hosts.nix`:**
-   ```nix
-   turing = {
-     ip = "192.168.1.100";
-     user = "kevst";
-     tags = ["server"];
-   };
-   ```
-
-2. **Crear configuración en `hosts/turing/default.nix`**
-
-3. **Configurar Home Manager en `users/kevst/turing.nix`**
-
-4. **Probar conexión:**
-   ```bash
-   colmena apply --on turing --reboot=false
-   ```
-
-## Desarrollo Local
-
-### Entorno de Desarrollo
 ```bash
-# Entrar al shell de desarrollo
-nix develop
-
-# Construir configuración local
-colmena build --on wsl
+just check
 ```
 
-### Comandos Útiles
-- `just deploy` - Desplegar a todos los hosts
-- `just deploy-turing` - Solo al servidor
-- `just test-unit-all` - Ejecutar tests
+3. Desplegar la configuración según el host:
 
-## Estructura del Repositorio
+```bash
+# Despliegue en WSL
+just wsl
 
-```
-├── flake.nix                    # Configuración principal
-├── hosts.nix                    # Metadatos de hosts
-├── justfile                     # Tareas de desarrollo
-├── hosts/
-│   ├── wsl/default.nix          # Config sistema WSL
-│   └── turing/default.nix       # Config sistema Turing
-├── users/kevst/
-│   ├── wsl.nix                  # Config usuario WSL
-│   └── turing.nix               # Config usuario Turing
-└── tests/
-    └── unit/                    # Tests de integración
+# Despliegue en el servidor "turing"
+just turing
 ```
 
-## Troubleshooting
+---
 
-### Problemas Comunes
+## Vista general de la arquitectura
 
-**SSH falla:**
-- Verificar claves: `ssh-copy-id user@host`
-- Firewall: `sudo ufw allow ssh` en el host remoto
+### Estructura de directorios
 
-**Build falla:**
-- Actualizar flake: `nix flake update`
-- Verificar sintaxis: `nix flake check`
+```
+├── flake.nix                    # Flake principal
+├── justfile                     # Comandos específicos del proyecto (just)
+├── hosts/                       # Configuración a nivel de sistema por host
+│   ├── wsl/                     # Host WSL
+│   └── turing/                  # Servidor turing
+├── modules/                     # Módulos de sistema compartidos
+├── home/                        # Configuración de Home Manager
+│   ├── core.nix                 # Base de Home Manager
+│   └── programs/                # Programas reutilizables (nvim, git, zsh, etc.)
+├── dotfiles/                    # Dotfiles crudos
+├── users/                       # Configuración por usuario y por host
+├── tests/                       # Tests unitarios e integración en VMs
+├── dev/                         # Entorno de desarrollo (pre-commit)
+└── docs/                        # Documentación adicional
+```
 
-**Despliegue falla:**
-- Logs: `colmena apply --verbose`
-- Rollback: `colmena apply --on host --rollback`
+---
+
+## Descripción de los componentes
+
+### `hosts/`
+
+Contiene la **configuración de NixOS a nivel de sistema** para cada host.
+Aquí se definen aspectos específicos del entorno, como servicios, hardware, red o particularidades de WSL vs servidores físicos.
+
+---
+
+### `modules/`
+
+Incluye **módulos de sistema reutilizables**, aplicables a uno o varios hosts.
+Permite evitar duplicación y mantener una base común de configuración.
+
+---
+
+### `home/`
+
+Agrupa la configuración de **Home Manager**, organizada de forma modular:
+
+* `home/programs/`:
+  Piezas reutilizables de configuración (por ejemplo: `nvim`, `git`, `zsh`, `starship`).
+* `home/core.nix`:
+  Configuración base de Home Manager que luego es importada por cada usuario.
+
+Estas piezas se integran desde los módulos de cada usuario definidos en `users/`.
+
+---
+
+### `users/`
+
+Aquí se **componen las configuraciones de Home Manager por usuario y por host**.
+
+Estructura típica:
+
+* `users/${user}/common.nix`: Configuración compartida por el usuario en todos los hosts (por ejemplo: `git`, `zsh`, configuración básica del shell).
+
+* `users/${user}/wsl.nix`: Configuración específica para WSL.
+
+* `users/${user}/turing.nix`: Configuración específica para el servidor.
+
+Ejemplo de criterio:
+
+* `git` se utiliza en todos los hosts → `common.nix`
+* `podman` solo se utiliza en el servidor → `turing.nix`
+
+Este enfoque permite mantener **una separación clara entre lo común y lo específico**.
+
+---
+
+### `dotfiles/`
+
+Contiene **dotfiles crudos**, gestionados mediante **enlaces simbólicos** desde Nix y Home Manager.
+
+Ventajas de este enfoque:
+
+* Los dotfiles pueden reutilizarse en otros sistemas sin depender de Nix
+* Los cambios en los archivos se reflejan inmediatamente
+* No es necesario reconstruir el sistema Nix para modificar configuraciones simples
+
+---
+
+### `tests/`
+
+Incluye pruebas automatizadas:
+
+* **Tests unitarios** en VMs para componentes individuales
+* **Tests de integración** en VMs para cada host
+
+Esto permite validar cambios antes de desplegarlos en entornos reales.
+
+---
+
+### `dev/`
+
+Flake dedicado al **entorno de desarrollo**, que incluye herramientas para:
+
+* Pre-commit hooks
+* Linting
+* Formateo
+* Verificaciones de calidad
+
+---
+
+### `docs/`
+
+Documentación detallada sobre uso, extensión y troubleshooting del proyecto. Incluye guías de estilo de commits y otras referencias.
+
+---
+
+## Documentación adicional
+
+- Coding guidelines:
+  - [Estilo de commits](docs/coding-guidelines/commit_style.md): Estilo de commits y convenciones.
+
+---
