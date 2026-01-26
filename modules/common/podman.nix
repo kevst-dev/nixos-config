@@ -10,6 +10,12 @@
   };
   # Paquetes necesarios para gestión de contenedores
   environment.systemPackages = with pkgs; [
+    podman-compose # soporte para podman-compose
+    slirp4netns # networking rootless
+    fuse-overlayfs # overlayfs rootless
+    shadow # newuidmap/newgidmap para Podman rootless
+    coreutils # sleep disponible globalmente
+
     podman-compose # Soporte para docker-compose con Podman
   ];
 }

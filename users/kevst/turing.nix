@@ -20,8 +20,5 @@
 
     # Editor
     ../../home/programs/neovim
-
-    # Servicios de podman-compose para auto-inicio
-    ../../home/services/podman-compose-turing.nix
   ];
 }
