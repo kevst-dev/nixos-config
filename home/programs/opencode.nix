@@ -1,6 +1,11 @@
-{config, ...}: {
-  # Configuración de OpenCode usando symlink al repo
-  # Sigue el patrón de dotfiles como nvim y zsh
+{
+  config,
+  pkgs,
+  ...
+}: {
+  # Configuración de OpenCode usando symlinks al repo
+  home.packages = with pkgs; [opencode];
+
   home.file.".config/opencode/opencode.json".source =
     # Crea symlink fuera del store de Nix para editar en repo
     config.lib.file.mkOutOfStoreSymlink

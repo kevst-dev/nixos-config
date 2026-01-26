@@ -3,7 +3,6 @@
   home.packages = with pkgs; [
     # desarrollo
     claude-code
-    opencode
 
     # reemplazos modernos de herramientas CLI
     eza # reemplazo moderno de 'ls'

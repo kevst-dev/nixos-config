@@ -1,8 +1,15 @@
 # ============================================================================
-# FLEET HOST DEFINITIONS
-# Single source of truth for all host information
+# Definición de hosts - FLEET HOST DEFINITIONS
+# Fuente única de verdad para toda la información del host
 # ============================================================================
-# TODO: Una idea que me resulta interesante, seria pagar Proton Drive que es unos $50 dolares anuales y en el hacer mi segunda copia de seguridad cifrada, tendria una copia en el propio servidor y otra en la nube. la conexion al Proton Drive se puede hacer con Rclone, Rclone conectarlo con Restic y Restic hacer las copias de seguridad cifradas y automatizadas.
+# NOTA: La configuración de red (IP estática vs DHCP) se maneja en el módulo
+# networking.nix. Los valores aquí son parámetros que se pasan a ese módulo.
+#
+# TODO: Implementar Proton Drive para backup cifrado ($50/año):
+# - Rclone para conexión a Proton Drive
+# - Restic para backups cifrados y automatizados
+# - Doble copia: local en turing + nube
+# - En el futuro una copia en mi NAS en casa
 {
   # Hosts actuales
   wsl = {

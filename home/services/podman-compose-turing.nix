@@ -4,6 +4,7 @@
   # Servicios systemd de usuario para auto-iniciar contenedores Podman en Turing
   # Estos servicios ejecutan podman-compose up/down automáticamente en boot
   #
+  # TODO: Esto aun no funciona correctamente se debe hacer debug más adelante
   ##################################################################################################################
 
   systemd.user.services = {

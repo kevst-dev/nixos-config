@@ -33,3 +33,9 @@ Por lo tanto, un buen nombramiento del commit sería de la manera:
 ```
 git commit -m "🐛 bug: Un bug en mi config"
 ```
+
+Si el cambio es más descriptivo en español, mantén la misma estructura y no olvides el emoji al principio. Por ejemplo:
+
+```
+git commit -m "📝 docs: mover opencode al módulo"
+```
