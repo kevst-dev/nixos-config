@@ -1,4 +1,8 @@
-_: {
+{
+  ip,
+  hostname,
+  ...
+}: {
   imports = [
     ../../modules/common/system.nix
     ./hardware-configuration.nix
@@ -8,7 +12,18 @@ _: {
 
     # Configuraciones específicas del host
     ./boot.nix
-    ./networking.nix
+    # ./networking.nix
+    (import ../../modules/common/networking.nix {
+      interface = "enp2s0"; # Interfaz correcta para Turing
+      # interface = "eth1";  # Interfaz correcta para Turing
+      firewallPorts = [
+        22 # SSH
+        80 # HTTP (Traefik)
+        443 # HTTPS (Traefik)
+        8080 # Traefik Dashboard
+      ];
+      inherit ip hostname;
+    })
     ./users.nix
     ./services.nix
   ];

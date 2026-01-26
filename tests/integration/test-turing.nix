@@ -1,22 +1,55 @@
 {self, ...}: let
-  username = "kevst";
+  hosts = import ../../hosts.nix;
+  host = {
+    ip = "10.0.0.10"; # IP fija para test, se puede cambiar según necesidades
+    inherit (hosts.turing) username;
+    tags = ["tests" "server"];
+
+    # Este no es propio de host si no que en produccion se obtiene
+    # de el hostname del sistema, pero en test se define aqui para
+    # facilitar la verificacion
+    hostname = "turing";
+  };
+
+  # Configuración de test re-evaluada con parámetros de test
+  testConfig = self.inputs.nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
+    specialArgs = {
+      inherit (host) hostname ip username;
+      inherit (self) inputs;
+    };
+
+    # Reusar EXACTAMENTE los módulos del flake principal
+    inherit (self.nixosConfigurations.turing._module.args) modules;
+  };
 in {
   name = "turing-simple-test";
 
   # Permitir que los nodes modifiquen nixpkgs.* options (necesario para allowUnfree)
   node.pkgsReadOnly = false;
 
-  # Pasar specialArgs necesarios a todos los nodes
+  # Los specialArgs ya están definidos en testConfig, _module.args usa valores de test
   defaults = {
     _module.args = {
-      inherit username;
+      # hostname = "turing";
+      inherit (host) hostname ip username;
       inherit (self) inputs;
     };
   };
 
   nodes.machine = {
-    # Importar configuración real de Turing
-    imports = self.nixosConfigurations.turing._module.args.modules;
+    # Importar configuración re-evaluada con valores de test
+    imports = testConfig._module.args.modules;
+
+    # Configurar enlace virtual: mapear eth1 -> enp2s0 para que el módulo networking
+    # configure el nombre de interfaz esperado en lugar de eth1 que usa la VM por defecto
+    # Esto permite testear el módulo networking completo sin modificar código fuente.
+    # enp2s0 es el nombre esperado en Turing y que se encuentra en el archivo de
+    # configuracion hosts.nix
+    systemd.network.links."10-enp2s0" = {
+      matchConfig.PermanentMACAddress = "52:54:00:12:01:01"; # MAC address que QEMU asigna a eth1
+      linkConfig.Name = "enp2s0"; # Forzar nombre de interfaz esperado por el módulo networking
+    };
   };
 
   testScript = ''
@@ -68,9 +101,24 @@ in {
     machine.wait_for_open_port(22)
     print("   ✓ Puerto 22 (SSH) escuchando")
 
+    # Debug: Mostrar configuración de red actual
+    print("   🔍 Debug: Configuración de red actual:")
+    result = machine.succeed("ip addr show")
+    print(f"   IP addresses: {result}")
+    result = machine.succeed("ip route show")
+    print(f"   Routes: {result}")
+    result = machine.succeed("cat /etc/resolv.conf")
+    print(f"   Resolv.conf: {result}")
+    result = machine.succeed("hostname")
+    print(f"   Hostname: {result}")
+
     # Verificar conectividad de red básica (buscar cualquier interfaz activa)
     machine.succeed("ip addr show | grep -E 'inet.*global' | grep -qv '127.0.0.1'")
     print("   ✓ Interfaz de red con dirección IP configurada")
+
+    # Verificar que la IP de test esté configurada
+    machine.succeed("ip addr show | grep -q '10.0.0.10'")
+    print("   ✓ IP de test configurada correctamente (10.0.0.10)")
 
     # FASE 6: Verificar Podman y Docker
     print("\n🐳 FASE 6: Verificando contenedores (Podman/Docker)...")

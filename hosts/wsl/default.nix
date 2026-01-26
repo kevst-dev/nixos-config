@@ -1,13 +1,22 @@
 {
+  hostname,
+  ip,
   pkgs,
   username,
   ...
 }: {
-  imports = [../../modules/common/system.nix];
+  imports = [
+    ../../modules/common/system.nix
+
+    (import ../../modules/common/networking.nix {
+      interface = "eth0";
+      firewallPorts = [];
+      inherit ip hostname;
+    })
+  ];
 
   # Configuración específica de WSL
   wsl.enable = true;
-  networking.hostName = "wsl";
   wsl.defaultUser = username;
 
   # Configurar zsh como shell por defecto para el usuario

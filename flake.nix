@@ -29,27 +29,21 @@
     # Diccionarios con la configuración de cada host
     hosts = import ./hosts.nix;
 
-    username = "kevst"; # Usuario único para todos los hosts
-
     # Helper para crear hosts con configuración modular
     mkHost = {
       hostname,
       ip, # IP del host (null para dynamic)
-      user, # Usuario del host
+      username, # Usuario del host
       system ? "x86_64-linux",
       includeWSL ? false,
       userConfig,
-    }: let
-      specialArgs = {inherit username;};
-    in
+    }:
       nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs =
-          specialArgs
-          // {
-            inherit inputs;
-            inherit ip user;
-          };
+        specialArgs = {
+          inherit inputs;
+          inherit hostname ip username;
+        };
 
         # CONSTRUCCIÓN DE MÓDULOS
         # El operador ++ concatena (une) listas en Nix
@@ -81,7 +75,9 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${username} = import userConfig; # Importa config específica del host
-                extraSpecialArgs = inputs // specialArgs // {inherit inputs;};
+                extraSpecialArgs = {
+                  inherit inputs hostname ip username;
+                };
               };
             }
           ];
@@ -91,16 +87,16 @@
     nixosConfigurations = {
       wsl = mkHost {
         hostname = "wsl";
-        userConfig = ./. + "/users/${hosts.wsl.user}/wsl.nix";
+        userConfig = ./. + "/users/${hosts.wsl.username}/wsl.nix";
         includeWSL = true;
-        inherit (hosts.wsl) ip user;
+        inherit (hosts.wsl) ip username;
       };
 
       turing = mkHost {
         hostname = "turing";
-        userConfig = ./. + "/users/${hosts.turing.user}/turing.nix";
+        userConfig = ./. + "/users/${hosts.turing.username}/turing.nix";
         includeWSL = false;
-        inherit (hosts.turing) ip user;
+        inherit (hosts.turing) ip username;
       };
     };
 

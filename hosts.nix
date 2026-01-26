@@ -2,18 +2,18 @@
 # FLEET HOST DEFINITIONS
 # Single source of truth for all host information
 # ============================================================================
-# TODO: Configurar uso de IPs dinámicas en la configuración de red (actualmente no se usan, solo se pasan como params)
+# TODO: Una idea que me resulta interesante, seria pagar Proton Drive que es unos $50 dolares anuales y en el hacer mi segunda copia de seguridad cifrada, tendria una copia en el propio servidor y otra en la nube. la conexion al Proton Drive se puede hacer con Rclone, Rclone conectarlo con Restic y Restic hacer las copias de seguridad cifradas y automatizadas.
 {
   # Hosts actuales
   wsl = {
     ip = null; # Dynamic IP
-    user = "kevst";
+    username = "kevst";
     tags = ["dev"];
   };
 
   turing = {
     ip = "192.168.1.100";
-    user = "kevst";
+    username = "kevst";
     tags = ["server"];
   };
 }
