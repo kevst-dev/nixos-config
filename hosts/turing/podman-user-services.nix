@@ -11,18 +11,26 @@
   in {
     service = {
       description = "Podman Compose - ${attrs.label}";
-      after = ["default.target"] ++ (map (svc: "${svc}.service") extraAfter);
+      after = ["default.target" "network-online.target"] ++ (map (svc: "${svc}.service") extraAfter);
       wantedBy = ["default.target"];
       enable = true;
       wants = map (svc: "${svc}.service") extraWants;
+      # Límites de reinicio (van en [Unit], no en [Service])
+      startLimitIntervalSec = 60;
+      startLimitBurst = 3;
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
         WorkingDirectory = dir;
         Environment = ["PATH=${servicePath}"];
+        # Esperar 5 segundos antes de iniciar para evitar race conditions al boot
+        ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
         ExecStart = "${pkgs.podman-compose}/bin/podman-compose up -d";
         ExecStop = "${pkgs.podman-compose}/bin/podman-compose down";
         TimeoutStartSec = "0";
+        # Reintentar si falla al iniciar
+        Restart = "on-failure";
+        RestartSec = "10";
       };
     };
   };
@@ -35,6 +43,12 @@
       label = "Cloudflare Tunnel";
       directory = "/mnt/nvme0n1/self-hosted/cloudflare";
     };
+    tinyauth = runCompose {
+      label = "TinyAuth";
+      directory = "/mnt/nvme0n1/self-hosted/tinyauth";
+      after = ["podman-compose-traefik"];
+      wants = ["podman-compose-traefik"];
+    };
     homepage = runCompose {
       label = "Homepage";
       directory = "/mnt/nvme0n1/self-hosted/homepage";
@@ -46,6 +60,7 @@ in {
   systemd.user.services = {
     podman-compose-traefik = composeStacks.traefik.service;
     podman-compose-cloudflare = composeStacks.cloudflare.service;
+    podman-compose-tinyauth = composeStacks.tinyauth.service;
     podman-compose-homepage = composeStacks.homepage.service;
   };
 }
