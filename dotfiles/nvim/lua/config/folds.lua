@@ -30,12 +30,11 @@ vim.opt.foldlevelstart = 99 -- iniciar con todos los folds abiertos al abrir arc
 vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
 	callback = function()
 		-- Verificar si treesitter tiene parser para el filetype actual
+		-- Usamos la API nativa de Neovim (pcall en get_parser)
 		local has_ts_parser = false
-		if nixCats("syntax") then
-			local success, ts_parsers = pcall(require, "nvim-treesitter.parsers")
-			if success and vim.bo.filetype ~= "" then
-				has_ts_parser = ts_parsers.has_parser(vim.bo.filetype)
-			end
+		if vim.bo.filetype ~= "" then
+			local ok = pcall(vim.treesitter.get_parser, 0)
+			has_ts_parser = ok
 		end
 
 		-- Configurar método apropiado basado en disponibilidad de parser

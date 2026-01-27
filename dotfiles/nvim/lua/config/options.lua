@@ -95,18 +95,21 @@ options.errorbells = false -- Sin sonidos de error
 -- ==========================================================================
 -- WSL CLIPBOARD INTEGRATION
 -- ==========================================================================
+-- Solo configurar win32yank si estamos en WSL (detectado por variable de entorno)
 
-vim.g.clipboard = {
-	name = "win32yank-wsl",
-	copy = {
-		["+"] = "win32yank.exe -i --crlf",
-		["*"] = "win32yank.exe -i --crlf",
-	},
-	paste = {
-		["+"] = "win32yank.exe -o --crlf",
-		["*"] = "win32yank.exe -o --crlf",
-	},
-	cache_enable = 0,
-}
+if vim.fn.has("wsl") == 1 or vim.env.WSL_DISTRO_NAME ~= nil then
+	vim.g.clipboard = {
+		name = "win32yank-wsl",
+		copy = {
+			["+"] = "win32yank.exe -i --crlf",
+			["*"] = "win32yank.exe -i --crlf",
+		},
+		paste = {
+			["+"] = "win32yank.exe -o --crlf",
+			["*"] = "win32yank.exe -o --crlf",
+		},
+		cache_enable = 0,
+	}
+end
 
 print("⚙️  Opciones configuradas correctamente")
