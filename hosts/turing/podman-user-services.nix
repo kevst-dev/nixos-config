@@ -13,6 +13,7 @@
       description = "Podman Compose - ${attrs.label}";
       after = ["default.target"] ++ (map (svc: "${svc}.service") extraAfter);
       wantedBy = ["default.target"];
+      enable = true;
       wants = map (svc: "${svc}.service") extraWants;
       serviceConfig = {
         Type = "oneshot";
