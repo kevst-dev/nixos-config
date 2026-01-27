@@ -1,4 +1,9 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  lib,
+  ...
+}: let
+  servicePath = lib.makeBinPath [pkgs.podman pkgs.podman-compose pkgs.coreutils] + ":/run/current-system/sw/bin";
   runCompose = attrs: let
     dir = attrs.directory;
     extraAfter = attrs.after or [];
@@ -13,6 +18,7 @@
         Type = "oneshot";
         RemainAfterExit = true;
         WorkingDirectory = dir;
+        Environment = ["PATH=${servicePath}"];
         ExecStart = "${pkgs.podman-compose}/bin/podman-compose up -d";
         ExecStop = "${pkgs.podman-compose}/bin/podman-compose down";
         TimeoutStartSec = "0";
