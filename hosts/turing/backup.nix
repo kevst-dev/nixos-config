@@ -81,6 +81,23 @@
 #   sudo chmod 600 /etc/restic/swiss-backup.env
 #
 # ┌─────────────────────────────────────────────────────────────────────────────┐
+# │  ⚠️  ADVERTENCIA: GUARDA ESTOS SECRETOS EN UN LUGAR SEGURO                  │
+# └─────────────────────────────────────────────────────────────────────────────┘
+#
+# Sin /etc/restic/password NO PODRÁS RECUPERAR LOS BACKUPS.
+# Los datos están cifrados y sin esta contraseña son irrecuperables.
+#
+# Recomendación para guardar los secretos:
+#   - Password de restic    → Password manager (Bitwarden) + copia física
+#   - Credenciales Swiss    → Password manager (se pueden regenerar en Infomaniak)
+#
+# En caso de desastre total, necesitarás:
+#   1. La contraseña de restic (para descifrar)
+#   2. Acceso a Swiss Backup (credenciales o regenerar desde panel Infomaniak)
+#   3. Instalar restic en cualquier máquina Linux
+#   4. Ejecutar: restic -r swift:sb_project_SBI-KC131965:/nixos-turing-restic restore latest --target /destino
+#
+# ┌─────────────────────────────────────────────────────────────────────────────┐
 # │                          COMANDOS ÚTILES                                    │
 # └─────────────────────────────────────────────────────────────────────────────┘
 #
@@ -108,7 +125,12 @@
   # Configuración común para todos los backups
   # ─────────────────────────────────────────────────────────────────────────────
   commonPaths = [
-    "/DATA/AppData"
+    "/DATA/AppData/immich"
+    "/DATA/AppData/inventree-marco"
+    # "/DATA/AppData/inventree-sandro"
+    # "/DATA/AppData/pocketid"
+    "/DATA/AppData/traefik"
+    "/DATA/AppData/tududi"
   ];
 
   commonExcludes = [
