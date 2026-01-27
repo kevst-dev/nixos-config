@@ -26,6 +26,9 @@
     })
     ./users.nix
     ./services.nix
+
+    # Backups automáticos (restic)
+    ./backup.nix
   ];
 
   # Configuración específica del servidor Turing

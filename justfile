@@ -86,3 +86,29 @@ test-integration-turing:
 # Listar tests de integración disponibles
 test-integration-list:
 	nix flake show | grep -A 10 "checks"
+
+############################################################################
+#
+# Comandos de backup (restic) - Solo para Turing
+#
+############################################################################
+
+# Listar snapshots del backup en Turing (disco local NVMe)
+backup-turing:
+	sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password snapshots
+
+# Listar snapshots del backup en Swiss Backup (remoto)
+backup-swiss:
+	sudo systemd-run --wait -P --property=EnvironmentFile=/etc/restic/swiss-backup.env restic -r swift:sb_project_SBI-KC131965:/nixos-turing-restic --password-file /etc/restic/password snapshots
+
+# Listar todos los backups (Turing + Swiss Backup)
+backup-list:
+	@echo "=== BACKUP TURING (local NVMe) ==="
+	@sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password snapshots
+	@echo ""
+	@echo "=== BACKUP SWISS (remoto) ==="
+	@sudo systemd-run --wait -P --property=EnvironmentFile=/etc/restic/swiss-backup.env restic -r swift:sb_project_SBI-KC131965:/nixos-turing-restic --password-file /etc/restic/password snapshots
+
+# Ver estadísticas del backup en Swiss Backup
+backup-swiss-stats:
+	sudo systemd-run --wait -P --property=EnvironmentFile=/etc/restic/swiss-backup.env restic -r swift:sb_project_SBI-KC131965:/nixos-turing-restic --password-file /etc/restic/password stats

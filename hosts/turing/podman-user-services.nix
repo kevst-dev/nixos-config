@@ -157,10 +157,10 @@
       wants = ["podman-compose-traefik"];
     };
   };
-# =============================================================================
-# EXPORTACIÓN DE SERVICIOS
-# Estos se agregan a systemd.user.services en users.nix
-# =============================================================================
+  # =============================================================================
+  # EXPORTACIÓN DE SERVICIOS
+  # Estos se agregan a systemd.user.services en users.nix
+  # =============================================================================
 in {
   systemd.user.services = {
     podman-compose-traefik = composeStacks.traefik.service;
