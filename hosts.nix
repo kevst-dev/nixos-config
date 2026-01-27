@@ -19,7 +19,7 @@
   };
 
   turing = {
-    ip = "192.168.10.79";
+    ip = "192.168.20.79";
     username = "kevst";
     tags = ["server"];
   };
