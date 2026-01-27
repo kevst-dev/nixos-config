@@ -33,8 +33,9 @@ in {
       fuse-overlayfs
       shadow
     ];
-    systemd.user.services = podmanUserServices.systemd.user.services;
   };
 
   users.groups.${username} = {};
+
+  systemd.user.services = podmanUserServices.systemd.user.services;
 }
