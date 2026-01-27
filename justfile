@@ -52,6 +52,34 @@ dev:
 
 ############################################################################
 #
+# Mantenimiento y limpieza
+#
+############################################################################
+
+# Listar generaciones del sistema
+generations:
+	sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+
+# Ver espacio usado por /nix/store
+store-size:
+	@du -sh /nix/store
+
+# Limpiar generaciones más viejas que N días (ej: just clean 7)
+clean days="7":
+	sudo nix-collect-garbage --delete-older-than {{days}}d
+	@echo ""
+	@echo "🧹 limpieza completada, espacio actual:"
+	@du -sh /nix/store
+
+# Limpiar todo excepto generación actual (máximo espacio liberado)
+clean-all:
+	sudo nix-collect-garbage -d
+	@echo ""
+	@echo "🧹 limpieza completa, espacio actual:"
+	@du -sh /nix/store
+
+############################################################################
+#
 # Módulos - Comandos organizados por contexto
 #
 ############################################################################
