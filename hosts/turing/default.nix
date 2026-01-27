@@ -26,7 +26,6 @@
     })
     ./users.nix
     ./services.nix
-    ./podman-services.nix
   ];
 
   # Configuración específica del servidor Turing
