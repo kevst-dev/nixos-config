@@ -13,7 +13,6 @@
       firewallPorts = [];
       inherit ip hostname;
     })
-    ../../modules/common/rclone.nix
   ];
 
   # Configuración específica de WSL
