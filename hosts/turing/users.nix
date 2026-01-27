@@ -3,7 +3,7 @@
   username,
   ...
 }: let
-  podmanUserServices = import ./podman-user-services.nix {inherit pkgs;};
+  podmanUserServices = import ./podman-user-services.nix {inherit pkgs lib;};
 in {
   security.unprivilegedUsernsClone = true;
 
