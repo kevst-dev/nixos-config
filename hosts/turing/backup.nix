@@ -131,6 +131,7 @@
     # "/DATA/AppData/pocketid"
     "/DATA/AppData/traefik"
     "/DATA/AppData/tududi"
+    "/DATA/AppData/papra/"
   ];
 
   commonExcludes = [
