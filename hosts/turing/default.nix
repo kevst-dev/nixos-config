@@ -5,6 +5,7 @@
 }: {
   imports = [
     ../../modules/common/system.nix
+    ../../modules/common/nix-ld.nix
     ./hardware-configuration.nix
 
     # Herramientas a nivel de sistema

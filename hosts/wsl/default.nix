@@ -7,6 +7,7 @@
 }: {
   imports = [
     ../../modules/common/system.nix
+    ../../modules/common/nix-ld.nix
 
     (import ../../modules/common/networking.nix {
       interface = "eth0";
