@@ -190,6 +190,7 @@
   # ─────────────────────────────────────────────────────────────────────────────
   commonPaths = [
     "/mnt/nvme0n1/immich"
+    "/mnt/nvme0n1/jellyfin"
     "/DATA/AppData/inventree-marco"
     # "/DATA/AppData/inventree-sandro"
     # "/DATA/AppData/pocketid"
