@@ -49,11 +49,19 @@
 # 4. FRECUENCIA:
 #    - Local: Cada 6 horas (00:00, 06:00, 12:00, 18:00)
 #    - Remoto: Diario con delay aleatorio de hasta 1h
+#    - Prune LOCAL: Semanal (domingo 03:00)
+#    - Prune REMOTO: Semanal (sábado 02:00)
 #
 # 5. RETENCIÓN:
 #    - 7 snapshots diarios
 #    - 4 snapshots semanales
 #    - 6 snapshots mensuales
+#
+# 6. SEPARACIÓN BACKUP/PRUNE:
+#    - El backup y el prune se ejecutan en jobs SEPARADOS
+#    - Esto permite controlar mejor la frecuencia de limpieza
+#    - Prune es más costoso en recursos, ejecutarlo semanalmente es suficiente
+#    - Los timers de prune están configurados para ejecutarse cuando NO hay backup activo
 #
 # ┌─────────────────────────────────────────────────────────────────────────────┐
 # │                     CONFIGURACIÓN MANUAL REQUERIDA                          │
@@ -101,6 +109,10 @@
 # │                          COMANDOS ÚTILES                                    │
 # └─────────────────────────────────────────────────────────────────────────────┘
 #
+# ═══════════════════════════════════════════════════════════════════════════════
+# BACKUP
+# ═══════════════════════════════════════════════════════════════════════════════
+#
 # # Ejecutar backup manualmente:
 # sudo systemctl start restic-backups-local.service
 # sudo systemctl start restic-backups-swiss-backup.service
@@ -111,9 +123,61 @@
 #
 # # Ver timers programados:
 # systemctl list-timers | grep restic
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VERIFICAR BACKUPS
+# ═══════════════════════════════════════════════════════════════════════════════
 #
-# # Ver snapshots:
+# # Ver snapshots local:
 # sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password snapshots
+#
+# # Ver snapshots Swiss:
+# source /etc/restic/swiss-backup.env
+# restic -r swift:sb_project_SBI-KC131965:/nixos-turing-restic --password-file /etc/restic/password snapshots
+#
+# # Ver tamaño del repositorio:
+# sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password stats
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRUNE (LIMPIEZA) - Se ejecuta automáticamente 1 vez por semana
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# # PRUNE AUTOMÁTICO - Estos jobs se ejecutan automáticamente:
+# # - local-prune:    domingo 03:00 (restic-backups-local-prune.service)
+# # - swiss-prune:    sábado 02:00 (restic-backups-swiss-backup-prune.service)
+#
+# # Ver timers de prune:
+# systemctl list-timers | grep prune
+#
+# # Ejecutar prune manualmente (para probar o emergencia):
+# sudo systemctl start restic-backups-local-prune.service
+# sudo systemctl start restic-backups-swiss-backup-prune.service
+#
+# # Ver logs de prune:
+# sudo journalctl -u restic-backups-local-prune.service -f
+# sudo journalctl -u restic-backups-swiss-backup-prune.service -f
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRUNE MANUAL (sin usar systemd)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# # Ver qué se eliminaría SIN ejecutar (dry-run):
+# sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password \
+#   forget --dry-run --keep-daily 7 --keep-weekly 4 --keep-monthly 6
+#
+# # Ejecutar prune manualmente:
+# sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password \
+#   forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6
+#
+# # Para Swiss Backup:
+# source /etc/restic/swiss-backup.env
+# restic -r swift:sb_project_SBI-KC131965:/nixos-turing-restic \
+#   --password-file /etc/restic/password forget --prune \
+#   --keep-daily 7 --keep-weekly 4 --keep-monthly 6
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RESTAURACIÓN
+# ═══════════════════════════════════════════════════════════════════════════════
 #
 # # Restaurar archivo específico (ejemplo):
 # sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password \
@@ -125,7 +189,7 @@
   # Configuración común para todos los backups
   # ─────────────────────────────────────────────────────────────────────────────
   commonPaths = [
-    "/DATA/AppData/immich"
+    "/mnt/nvme0n1/immich"
     "/DATA/AppData/inventree-marco"
     # "/DATA/AppData/inventree-sandro"
     # "/DATA/AppData/pocketid"
@@ -154,6 +218,7 @@
   ];
 
   commonPruneOpts = [
+    "--group-by host" # Agrupar por host (ignorar paths diferentes)
     "--keep-daily 7" # Mantener 7 snapshots diarios
     "--keep-weekly 4" # Mantener 4 snapshots semanales
     "--keep-monthly 6" # Mantener 6 snapshots mensuales
@@ -180,10 +245,34 @@ in {
     # Cada 6 horas: 00:00, 06:00, 12:00, 18:00
     timerConfig = {
       OnCalendar = "*-*-* 00,06,12,18:00:00";
-      Persistent = true; # Ejecutar si se perdió el horario (ej: sistema apagado)
+      Persistent = true;
     };
 
+    # prune se ejecuta en job separado (local-prune)
+    pruneOpts = [];
+  };
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # PRUNE LOCAL - Limpieza semanal del repositorio local
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # Job separado para ejecutar prune 1 vez por semana
+  # Esto permite controlar mejor la retención y no ejecutar prune en cada backup
+
+  services.restic.backups.local-prune = {
+    repository = "/mnt/nvme0n1/backups/restic";
+    passwordFile = "/etc/restic/password";
+
+    # Semanal: domingo a las 03:00
+    timerConfig = {
+      OnCalendar = "Sun 03:00:00";
+      Persistent = true;
+    };
+
+    # Política de retención
     pruneOpts = commonPruneOpts;
+
+    # paths = [] indica que NO hace backup, solo prune
+    paths = [];
   };
 
   # ═══════════════════════════════════════════════════════════════════════════
@@ -210,7 +299,33 @@ in {
       RandomizedDelaySec = "1h";
     };
 
+    # prune se ejecuta en job separado (swiss-backup-prune)
+    pruneOpts = [];
+  };
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # PRUNE SWISS - Limpieza semanal del repositorio remoto
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # Job separado para ejecutar prune 1 vez por semana
+  # Se ejecuta el sábado a las 02:00 (antes del backup del domingo)
+
+  services.restic.backups.swiss-backup-prune = {
+    repository = "swift:sb_project_SBI-KC131965:/nixos-turing-restic";
+    passwordFile = "/etc/restic/password";
+    environmentFile = "/etc/restic/swiss-backup.env";
+
+    # Semanal: sábado a las 02:00 (con delay aleatorio de hasta 1h)
+    timerConfig = {
+      OnCalendar = "Sat 02:00:00";
+      Persistent = true;
+      RandomizedDelaySec = "1h";
+    };
+
+    # Política de retención
     pruneOpts = commonPruneOpts;
+
+    # paths = [] indica que NO hace backup, solo prune
+    paths = [];
   };
 
   # ═══════════════════════════════════════════════════════════════════════════

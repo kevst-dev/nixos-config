@@ -96,3 +96,45 @@ run-to-local:
 run-to-swiss:
 	sudo systemctl start restic-backups-swiss-backup.service
 	@echo "📦 backup a swiss iniciado, ver logs con: journalctl -u restic-backups-swiss-backup -f"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Ver timers (programación de jobs)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Listar todos los timers de restic (BACKUP y PRUNE)
+# Muestra cuándo se ejecutan los jobs de backup y limpieza
+timers:
+	@echo "📅 Jobs de BACKUP:"
+	@echo "   • local:      4 veces/día (00:00, 06:00, 12:00, 18:00)"
+	@echo "   • swiss:      1 vez/día (con delay aleatorio)"
+	@echo ""
+	@echo "🧹 Jobs de PRUNE (limpieza):"
+	@echo "   • local-prune:    domingo 03:00"
+	@echo "   • swiss-prune:   sábado 02:00"
+	@echo ""
+	systemctl list-timers | grep restic
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Prune (limpieza de snapshots muy antiguos)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Ejecutar prune usando el servicio de systemd configurado con nix-os
+run-prune-local:
+	sudo systemctl start restic-backups-local-prune.service
+	@echo "🧹 prune local iniciado, ver logs con: journalctl -u restic-backups-local-prune -f"
+
+run-prune-swiss:
+	sudo systemctl start restic-backups-swiss-backup-prune.service
+	@echo "🧹 prune swiss iniciado, ver logs con: journalctl -u restic-backups-swiss-backup-prune -f"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Check (verificación de integridad)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Verificar integridad del repo local
+check-local:
+	sudo restic {{repository_turing}} check --read-data
+
+# Verificar integridad del repo Swiss
+check-swiss:
+	sudo {{swiss_run}} restic {{repository_swiss}} check --read-data
