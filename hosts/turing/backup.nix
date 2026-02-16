@@ -216,6 +216,10 @@
     "**/immich/thumbs"
     "**/immich/encoded-video"
     "**/immich/library"
+
+    # Jellyfin: Solo config, excluir media y cache
+    "**/jellyfin/media"
+    "**/jellyfin/cache"
   ];
 
   commonPruneOpts = [
