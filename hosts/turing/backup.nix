@@ -220,6 +220,9 @@
     # Jellyfin: Solo config, excluir media y cache
     "**/jellyfin/media"
     "**/jellyfin/cache"
+
+    # InvenTree: /static regenera sola (pesa cientos de MB).
+    "**/inventree-marco/static"
   ];
 
   commonPruneOpts = [
