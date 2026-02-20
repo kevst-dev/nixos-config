@@ -28,5 +28,9 @@
     tree
     ripgrep
     fd
+
+    # SOPS para gestión de secretos
+    age
+    sops
   ];
 }
