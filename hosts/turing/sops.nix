@@ -17,6 +17,12 @@
         group = username;
         mode = "0600";
       };
+      gitea_turing_ssh_key = {
+        path = "/home/${username}/.ssh/gitea_turing_ed25519";
+        owner = username;
+        group = username;
+        mode = "0600";
+      };
     };
   };
 }
