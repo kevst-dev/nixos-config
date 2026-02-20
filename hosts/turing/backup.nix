@@ -123,7 +123,6 @@
 #
 # # Ver timers programados:
 # systemctl list-timers | grep restic
-
 # ═══════════════════════════════════════════════════════════════════════════════
 # VERIFICAR BACKUPS
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -137,7 +136,6 @@
 #
 # # Ver tamaño del repositorio:
 # sudo restic -r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password stats
-
 # ═══════════════════════════════════════════════════════════════════════════════
 # PRUNE (LIMPIEZA) - Se ejecuta automáticamente 1 vez por semana
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -156,7 +154,6 @@
 # # Ver logs de prune:
 # sudo journalctl -u restic-backups-local-prune.service -f
 # sudo journalctl -u restic-backups-swiss-backup-prune.service -f
-
 # ═══════════════════════════════════════════════════════════════════════════════
 # PRUNE MANUAL (sin usar systemd)
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -174,7 +171,6 @@
 # restic -r swift:sb_project_SBI-KC131965:/nixos-turing-restic \
 #   --password-file /etc/restic/password forget --prune \
 #   --keep-daily 7 --keep-weekly 4 --keep-monthly 6
-
 # ═══════════════════════════════════════════════════════════════════════════════
 # RESTAURACIÓN
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -184,10 +180,16 @@
 #   restore latest --target /tmp/restore-test --include "/DATA/AppData/homepage"
 #
 # ═══════════════════════════════════════════════════════════════════════════════
-{pkgs, config, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
   # ─────────────────────────────────────────────────────────────────────────────
   # Configuración común para todos los backups
   # ─────────────────────────────────────────────────────────────────────────────
+  resticPasswordFile = config.sops.secrets.restic_password.path;
+
   commonPaths = [
     "/mnt/nvme0n1/immich"
     "/mnt/nvme0n1/jellyfin"
@@ -250,7 +252,7 @@ in {
     paths = commonPaths;
     exclude = commonExcludes;
 
-    passwordFile = config.sops.secrets.restic_password.path;
+    passwordFile = resticPasswordFile;
 
     # Cada 6 horas: 00:00, 06:00, 12:00, 18:00
     timerConfig = {
@@ -270,7 +272,7 @@ in {
 
   services.restic.backups.local-prune = {
     repository = "/mnt/nvme0n1/backups/restic";
-    passwordFile = config.sops.secrets.restic_password.path;
+    passwordFile = resticPasswordFile;
 
     # Semanal: domingo a las 03:00
     timerConfig = {
@@ -299,7 +301,7 @@ in {
     paths = commonPaths;
     exclude = commonExcludes;
 
-    passwordFile = config.sops.secrets.restic_password.path;
+    passwordFile = resticPasswordFile;
     environmentFile = "/etc/restic/swiss-backup.env";
 
     # Diario con delay aleatorio de hasta 1 hora
@@ -321,7 +323,7 @@ in {
 
   services.restic.backups.swiss-backup-prune = {
     repository = "swift:sb_project_SBI-KC131965:/nixos-turing-restic";
-    passwordFile = config.sops.secrets.restic_password.path;
+    passwordFile = resticPasswordFile;
     environmentFile = "/etc/restic/swiss-backup.env";
 
     # Semanal: sábado a las 02:00 (con delay aleatorio de hasta 1h)
@@ -351,7 +353,7 @@ in {
   #   paths = commonPaths;
   #   exclude = commonExcludes;
   #
-  #   passwordFile = config.sops.secrets.restic_password.path;
+  #   passwordFile = resticPasswordFile;
   #   # Para SFTP, configurar SSH keys en lugar de password
   #
   #   timerConfig = {

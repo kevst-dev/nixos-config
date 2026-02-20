@@ -10,7 +10,6 @@
 # =============================================================================
 {
   pkgs,
-  lib,
   username, # Variable que viene de flake.nix (ej: "kevst")
   ...
 }: {

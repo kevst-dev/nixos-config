@@ -17,6 +17,7 @@
     ../../home/programs/zsh.nix
     ../../home/programs/starship.nix
     ../../home/programs/zoxide.nix
+    ../../home/programs/ssh.nix
 
     # Editor
     ../../home/programs/neovim

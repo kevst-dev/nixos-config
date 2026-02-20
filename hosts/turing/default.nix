@@ -26,7 +26,7 @@
       inherit ip hostname;
     })
     ./users.nix
-    ./services.nix
+    ./server_ssh.nix
 
     # SOPS-Nix para gestión de secretos
     ./sops.nix
