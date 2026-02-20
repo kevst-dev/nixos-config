@@ -13,10 +13,7 @@
   lib,
   username, # Variable que viene de flake.nix (ej: "kevst")
   ...
-}: let
-  # Importa los servicios de podman-compose definidos en podman-user-services.nix
-  podmanUserServices = import ./podman-user-services.nix {inherit pkgs lib;};
-in {
+}: {
   # ───────────────────────────────────────────────────────────────────────────
   # SEGURIDAD: Permitir namespaces de usuario sin privilegios
   # Necesario para que podman rootless pueda crear contenedores aislados
@@ -65,10 +62,4 @@ in {
 
   # Crear el grupo con el mismo nombre que el usuario
   users.groups.${username} = {};
-
-  # ───────────────────────────────────────────────────────────────────────────
-  # SERVICIOS SYSTEMD DE USUARIO
-  # Importados desde podman-user-services.nix
-  # ───────────────────────────────────────────────────────────────────────────
-  systemd.user.services = podmanUserServices.systemd.user.services;
 }
