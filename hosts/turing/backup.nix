@@ -197,6 +197,8 @@
     "/DATA/AppData/traefik"
     "/DATA/AppData/tududi"
     "/DATA/AppData/papra/"
+    "/DATA/AppData/gitea/"
+    "/DATA/AppData/vaultwarden/"
   ];
 
   commonExcludes = [
