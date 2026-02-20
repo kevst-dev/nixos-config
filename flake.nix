@@ -17,6 +17,10 @@
 
     # nixCats para configuración de Neovim
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
+
+    # SOPS-Nix para gestión de secretos
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -24,6 +28,7 @@
     nixpkgs,
     home-manager,
     nixos-wsl,
+    sops-nix,
     ...
   } @ inputs: let
     # Diccionarios con la configuración de cada host
@@ -66,7 +71,9 @@
             then [nixos-wsl.nixosModules.wsl]
             else []
           )
-          # BLOQUE 3: Configuración de Home Manager (SIEMPRE se incluye)
+          # BLOQUE 3: SOPS-Nix (Gestión de secretos)
+          ++ [sops-nix.nixosModules.sops]
+          # BLOQUE 4: Configuración de Home Manager (SIEMPRE se incluye)
           # Gestiona la configuración a nivel de usuario
           ++ [
             home-manager.nixosModules.home-manager

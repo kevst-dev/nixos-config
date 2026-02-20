@@ -184,7 +184,7 @@
 #   restore latest --target /tmp/restore-test --include "/DATA/AppData/homepage"
 #
 # ═══════════════════════════════════════════════════════════════════════════════
-{pkgs, ...}: let
+{pkgs, config, ...}: let
   # ─────────────────────────────────────────────────────────────────────────────
   # Configuración común para todos los backups
   # ─────────────────────────────────────────────────────────────────────────────
@@ -250,7 +250,7 @@ in {
     paths = commonPaths;
     exclude = commonExcludes;
 
-    passwordFile = "/etc/restic/password";
+    passwordFile = config.sops.secrets.restic_password.path;
 
     # Cada 6 horas: 00:00, 06:00, 12:00, 18:00
     timerConfig = {
@@ -270,7 +270,7 @@ in {
 
   services.restic.backups.local-prune = {
     repository = "/mnt/nvme0n1/backups/restic";
-    passwordFile = "/etc/restic/password";
+    passwordFile = config.sops.secrets.restic_password.path;
 
     # Semanal: domingo a las 03:00
     timerConfig = {
@@ -299,7 +299,7 @@ in {
     paths = commonPaths;
     exclude = commonExcludes;
 
-    passwordFile = "/etc/restic/password";
+    passwordFile = config.sops.secrets.restic_password.path;
     environmentFile = "/etc/restic/swiss-backup.env";
 
     # Diario con delay aleatorio de hasta 1 hora
@@ -321,7 +321,7 @@ in {
 
   services.restic.backups.swiss-backup-prune = {
     repository = "swift:sb_project_SBI-KC131965:/nixos-turing-restic";
-    passwordFile = "/etc/restic/password";
+    passwordFile = config.sops.secrets.restic_password.path;
     environmentFile = "/etc/restic/swiss-backup.env";
 
     # Semanal: sábado a las 02:00 (con delay aleatorio de hasta 1h)
@@ -351,7 +351,7 @@ in {
   #   paths = commonPaths;
   #   exclude = commonExcludes;
   #
-  #   passwordFile = "/etc/restic/password";
+  #   passwordFile = config.sops.secrets.restic_password.path;
   #   # Para SFTP, configurar SSH keys en lugar de password
   #
   #   timerConfig = {

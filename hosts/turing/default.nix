@@ -28,6 +28,9 @@
     ./users.nix
     ./services.nix
 
+    # SOPS-Nix para gestión de secretos
+    ./sops.nix
+
     # Backups automáticos (restic)
     ./backup.nix
   ];

@@ -13,8 +13,9 @@ default:
     @just --list backup_turing
 
 # Variables de repositorios restic
-repository_turing := "-r /mnt/nvme0n1/backups/restic --password-file /etc/restic/password"
-repository_swiss := "-r swift:sb_project_SBI-KC131965:/nixos-turing-restic --password-file /etc/restic/password"
+# Nota: el password se obtiene de sops-nix en /run/secrets/restic_password
+repository_turing := "-r /mnt/nvme0n1/backups/restic --password-file /run/secrets/restic_password"
+repository_swiss := "-r swift:sb_project_SBI-KC131965:/nixos-turing-restic --password-file /run/secrets/restic_password"
 
 # Prefijo para comandos Swiss (carga credenciales Swift)
 swiss_run := "systemd-run --wait -P --property=EnvironmentFile=/etc/restic/swiss-backup.env"
