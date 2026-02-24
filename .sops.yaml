@@ -1,6 +1,7 @@
 keys:
   - &turing age1l4u8dnkxcq2yaum7erzykz0z9c0j6z5zwk3hcef4purxns7ln58qwvpjpl
   - &wsl age1qp9szs8hentaa2hnj6my2ekxh7sljf74xmcr4fvcyyrs2sa8ha7sp75g9y
+  - &stallman age1dpsrnsvkplpeu0vu6whgy2923h47cendtm0h5h3yplwu7g2xhcxqjs7q5p
 
 creation_rules:
   - path_regex: secrets/turing.yaml$
@@ -11,3 +12,7 @@ creation_rules:
     key_groups:
     - age:
       - *wsl
+  - path_regex: secrets/stallman.yaml$
+    key_groups:
+    - age:
+      - *stallman

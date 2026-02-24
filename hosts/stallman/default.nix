@@ -6,6 +6,7 @@
     ./users.nix
     ./ssh.nix
     ./boot.nix
+    ./sops.nix
   ];
 
   networking = {
