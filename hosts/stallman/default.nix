@@ -9,13 +9,12 @@
   ];
 
   networking = {
+    networkmanager.enable = true;
     hostName = hostname;
-    useDHCP = true;
-  };
-
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [22];
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [22];
+    };
   };
 
   system.stateVersion = "25.11";
