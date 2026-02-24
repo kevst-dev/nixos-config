@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ./users.nix
     ./ssh.nix
+    ./boot.nix
   ];
 
   networking = {
