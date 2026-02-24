@@ -110,6 +110,20 @@ if vim.fn.has("wsl") == 1 or vim.env.WSL_DISTRO_NAME ~= nil then
 		},
 		cache_enable = 0,
 	}
+-- Linux sin GUI (terminal/tty/SSH) - usar OSC-52
+-- Funciona con cualquier terminal que soporte OSC-52 (iTerm2, kitty, Windows Terminal, etc.)
+else
+	vim.g.clipboard = {
+		name = "OSC-52",
+		copy = {
+			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+		},
+		paste = {
+			["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+			["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+		},
+	}
 end
 
 print("⚙️  Opciones configuradas correctamente")
