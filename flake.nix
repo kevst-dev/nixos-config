@@ -105,6 +105,13 @@
         includeWSL = false;
         inherit (hosts.turing) ip username;
       };
+
+      stallman = mkHost {
+        hostname = "stallman";
+        userConfig = ./. + "/users/${hosts.stallman.username}/stallman.nix";
+        includeWSL = false;
+        inherit (hosts.stallman) ip username;
+      };
     };
 
     # Tests de integración
