@@ -1,5 +1,5 @@
 # Reconstruye y activa el sistema sin reboot
-rebuild_cmd := "nixos-rebuild switch --use-remote-sudo"
+rebuild_cmd := "nixos-rebuild switch --sudo"
 
 # Muestra la lista de commandos disponibles
 default:
@@ -35,6 +35,10 @@ wsl:
 # Desplegar en servidor Turing
 turing:
 	{{rebuild_cmd}} --flake .#turing
+
+# Desplegar en laptop Stallman
+stallman:
+	{{rebuild_cmd}} --flake .#stallman
 
 ############################################################################
 #
