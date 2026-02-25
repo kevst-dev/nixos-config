@@ -7,6 +7,8 @@
     ./ssh.nix
     ./boot.nix
     ./sops.nix
+    ./packages.nix
+    ./sound.nix
   ];
 
   # NixOS module para Hyprland (requerido para session files y XDG portals)
