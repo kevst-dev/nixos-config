@@ -1,0 +1,11 @@
+* {
+    /* Basado en la paleta Catppuccin Mocha / Tokyo Night */
+    bg0:    #11111bE6; /* Fondo con un toque de transparencia */
+    bg2:    #313244;    /* Borde exterior */
+    bg3:    #45475a;    /* Borde de la caja de búsqueda */
+    text:   #cdd6f4;    /* Texto principal */
+    blue:   #89b4fa;    /* El color de "Edit Config" */
+    grey1:  #6c7086;    /* Color del "Search..." */
+    green:  #a6e3a1;    /* Para estados activos */
+    select: #313244;    /* Fondo del elemento resaltado */
+}
