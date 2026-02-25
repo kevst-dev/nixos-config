@@ -9,6 +9,10 @@
     ./sops.nix
   ];
 
+  # NixOS module para Hyprland (requerido para session files y XDG portals)
+  # Referencia: https://wiki.hypr.land/Nix/
+  wayland.windowManager.hyprland.enable = true;
+
   networking = {
     networkmanager.enable = true;
     hostName = hostname;

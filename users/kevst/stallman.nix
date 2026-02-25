@@ -7,5 +7,6 @@
     ../../home/programs/zoxide.nix
     ../../home/programs/ssh.nix
     ../../home/programs/neovim
+    ../../home/programs/ui
   ];
 }
