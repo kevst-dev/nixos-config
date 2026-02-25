@@ -9,6 +9,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Hyprland - NixOS module (requerido para session files y XDG portals)
+    # Referencia: https://wiki.hypr.land/Nix/
+    hyprland.url = "github:hyprwm/Hyprland";
+
     # NOTA: Este input se declara para todos los hosts pero solo se USA en WSL.
     # Nix no soporta inputs condicionales/opcionales aún (2026).
     # Cuando se implemente (github.com/NixOS/nix/issues/7205), se puede marcar como opcional.
