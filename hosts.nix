@@ -25,4 +25,11 @@
     username = "kevst";
     tags = ["laptop" "dev"];
   };
+
+  # Tanenbaum: PC de escritorio
+  tanenbaum = {
+    ip = "192.168.20.80";
+    username = "kevst";
+    tags = ["desktop"];
+  };
 }

@@ -120,6 +120,13 @@
         includeWSL = false;
         inherit (hosts.stallman) ip username;
       };
+
+      tanenbaum = mkHost {
+        hostname = "tanenbaum";
+        userConfig = ./. + "/users/${hosts.tanenbaum.username}/tanenbaum.nix";
+        includeWSL = false;
+        inherit (hosts.tanenbaum) ip username;
+      };
     };
 
     # Tests de integración
