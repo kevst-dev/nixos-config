@@ -1,13 +1,30 @@
-{hostname, ...}: {
-  imports = [
-    ../../modules/common/system.nix
-    ../../modules/common/nix-ld.nix
-    ./hardware-configuration.nix
-    ./users.nix
-    ./ssh.nix
-    ./boot.nix
-  ];
+{
+  hostname,
+  ip,
+  ...
+}: let
+  tanenbaumNetworking = import ../../modules/common/networking.nix {
+    interface = "eno1"; # Interfaz física del equipo según `ip a`
+    firewallPorts = [22];
+    inherit ip hostname;
+  };
+in {
+  imports =
+    [
+      ../../modules/common/system.nix
+      ../../modules/common/nix-ld.nix
+      ../../modules/common/podman.nix
+      ./hardware-configuration.nix
+      ./boot.nix
+    ]
+    ++ [tanenbaumNetworking]
+    ++ [
+      ./users.nix
+      ./server_ssh.nix
+    ];
 
+  # Tanenbaum se comporta como escritorio y servidor ligero; mantiene el stack de usuario pero
+  # incorpora podman rootless y hardening de SSH.
   i18n.defaultLocale = "es_MX.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -24,14 +41,7 @@
 
   time.timeZone = "America/Bogota";
 
-  networking = {
-    networkmanager.enable = true;
-    hostName = hostname;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [22];
-    };
-  };
+  networking.networkmanager.enable = true;
 
   system.stateVersion = "25.11";
 }

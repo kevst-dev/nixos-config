@@ -46,6 +46,7 @@
     mkHost = {
       hostname,
       ip, # IP del host (null para dynamic)
+      interface ? null,
       username, # Usuario del host
       system ? "x86_64-linux",
       includeWSL ? false,
@@ -55,7 +56,7 @@
         inherit system;
         specialArgs = {
           inherit inputs;
-          inherit hostname ip username;
+          inherit hostname ip username interface;
         };
 
         # CONSTRUCCIÓN DE MÓDULOS
@@ -91,7 +92,7 @@
                 useUserPackages = true;
                 users.${username} = import userConfig; # Importa config específica del host
                 extraSpecialArgs = {
-                  inherit inputs hostname ip username;
+                  inherit inputs hostname ip username interface;
                 };
               };
             }
@@ -125,7 +126,7 @@
         hostname = "tanenbaum";
         userConfig = ./. + "/users/${hosts.tanenbaum.username}/tanenbaum.nix";
         includeWSL = false;
-        inherit (hosts.tanenbaum) ip username;
+        inherit (hosts.tanenbaum) ip username interface;
       };
     };
 

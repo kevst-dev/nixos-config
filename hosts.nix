@@ -30,6 +30,6 @@
   tanenbaum = {
     ip = "192.168.20.80";
     username = "kevst";
-    tags = ["desktop"];
+    tags = ["desktop" "server"];
   };
 }
