@@ -4,6 +4,7 @@
     # desarrollo
     claude-code
     uv # gestor de paquetes Python ultrarrápido (requiere nix-ld para binarios)
+    mise # Front‑end de entornos y herramientas de desarrollo (jdx/mise)
 
     # reemplazos modernos de herramientas CLI
     eza # reemplazo moderno de 'ls'

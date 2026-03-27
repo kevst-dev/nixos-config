@@ -29,6 +29,12 @@
     # Zen Browser
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Front‑end de entornos de desarrollo: mise-en-place
+    mise = {
+      url = "github:jdx/mise";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -51,6 +57,7 @@
       system ? "x86_64-linux",
       includeWSL ? false,
       userConfig,
+      extraHomeUsers ? {},
     }:
       nixpkgs.lib.nixosSystem {
         inherit system;
@@ -90,7 +97,13 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.${username} = import userConfig; # Importa config específica del host
+                users = let
+                  baseUsers = {${username} = import userConfig;};
+                  # Importa cada ruta de extraHomeUsers; el nombre del atributo no se usa
+                  # statix-ignore: W07  # eta-reduction intencional para usar import directamente
+                  extraUsers = nixpkgs.lib.mapAttrs' import extraHomeUsers;
+                in
+                  baseUsers // extraUsers;
                 extraSpecialArgs = {
                   inherit inputs hostname ip username interface;
                 };
@@ -127,6 +140,9 @@
         userConfig = ./. + "/users/${hosts.tanenbaum.username}/tanenbaum.nix";
         includeWSL = false;
         inherit (hosts.tanenbaum) ip username interface;
+        extraHomeUsers = {
+          npc = ./. + "/users/npc/tanenbaum.nix";
+        };
       };
     };
 
