@@ -9,6 +9,9 @@
     ../../modules/common/system.nix
     ../../modules/common/nix-ld.nix
 
+    # Podman para contenedores
+    ../../modules/common/podman.nix
+
     (import ../../modules/common/networking.nix {
       interface = "eth0";
       firewallPorts = [];
