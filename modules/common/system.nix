@@ -19,6 +19,18 @@
     just
   ];
 
+  # Configuramos git de forma declarativa para permitir el helper de credenciales
+  # "store" apuntando a un archivo en $HOME. Así evitamos el error de
+  # "read-only file system" cuando git intenta escribir en ~/.config/git/config
+  # dentro de los perfiles inmutables de NixOS.
+  programs.git = {
+    enable = true;
+    package = pkgs.git;
+    config = {
+      credential.helper = "store --file /home/kevst/.git-credentials";
+    };
+  };
+
   # Habilitar zsh a nivel de sistema (requerido para Home Manager)
   programs.zsh.enable = true;
 }
