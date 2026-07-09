@@ -79,6 +79,16 @@
           [
             ./hosts/${hostname}/default.nix
           ]
+          # BLOQUE 1.5: Overlays globales (SIEMPRE se incluyen)
+          # Parches a paquetes de nixpkgs que aplican a todos los hosts.
+          # Ver overlays/opencode.nix para documentación detallada.
+          ++ [
+            {
+              nixpkgs.overlays = [
+                (import ./overlays/opencode.nix)
+              ];
+            }
+          ]
           # BLOQUE 2: Módulo de WSL (CONDICIONAL - solo si includeWSL = true)
           # Para WSL: [nixos-wsl.nixosModules.wsl]
           # Para otros hosts: [] (lista vacía)
