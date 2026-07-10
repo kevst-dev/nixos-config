@@ -11,7 +11,6 @@
     eza # reemplazo moderno de 'ls'
     bat # reemplazo moderno de 'cat'
     fzf # fuzzy finder para línea de comandos
-    television # navegador de archivos TUI
 
     # Herramientas para desarrollar en rust
     cargo

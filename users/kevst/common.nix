@@ -10,6 +10,7 @@
     ../../home/core.nix
     ../../home/programs/git.nix
     ../../home/programs/opencode.nix
+    ../../home/programs/television.nix
   ];
 
   # Identidad de git (compartida entre todos los hosts)

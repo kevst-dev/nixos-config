@@ -1,0 +1,22 @@
+[metadata]
+name = "tldr"
+description = "Buscar y previsualizar páginas TLDR"
+requirements = ["tldr"]
+
+[source]
+command = "tldr --list"
+
+[preview]
+command = "tldr '{}'"
+
+[ui]
+preview_panel = { size = 60 }
+
+[keybindings]
+shortcut = "f3"
+ctrl-e = "actions:open"
+
+[actions.open]
+description = "Abrir página en less"
+command = "tldr '{}' | less"
+mode = "fork"
