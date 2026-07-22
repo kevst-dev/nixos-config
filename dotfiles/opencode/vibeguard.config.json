@@ -1,0 +1,86 @@
+{
+  "enabled": true,
+  "debug": false,
+  "placeholder_prefix": "__VG_",
+  "session": {
+    "ttl": "1h",
+    "max_mappings": 100000
+  },
+  "patterns": {
+    "keywords": [],
+    "regex": [
+      {
+        "pattern": "(?<=ORACLE_URL=\")[^\"]+",
+        "category": "ORACLE_URL"
+      },
+      {
+        "pattern": "(?<=ORACLE_USERNAME=\")[^\"]+",
+        "category": "ORACLE_USERNAME"
+      },
+      {
+        "pattern": "(?<=ORACLE_PASSWORD=\")[^\"]+",
+        "category": "ORACLE_PASSWORD"
+      },
+
+      {
+        "pattern": "(?<=SHAREPOINT_AUDIT_SITE_URL=\")[^\"]+",
+        "category": "SP_AUDIT_SITE_URL"
+      },
+      {
+        "pattern": "(?<=SHAREPOINT_AUDIT_TENANT_ID=\")[^\"]+",
+        "category": "SP_AUDIT_TENANT_ID"
+      },
+      {
+        "pattern": "(?<=SHAREPOINT_AUDIT_CLIENT_ID=\")[^\"]+",
+        "category": "SP_AUDIT_CLIENT_ID"
+      },
+      {
+        "pattern": "(?<=SHAREPOINT_AUDIT_CLIENT_SECRET=\")[^\"]+",
+        "category": "SP_AUDIT_CLIENT_SECRET"
+      },
+
+      {
+        "pattern": "(?<=SHAREPOINT_CONTRATOS_SITE_URL=\")[^\"]+",
+        "category": "SP_CONTRATOS_SITE_URL"
+      },
+      {
+        "pattern": "(?<=SHAREPOINT_CONTRATOS_TENANT_ID=\")[^\"]+",
+        "category": "SP_CONTRATOS_TENANT_ID"
+      },
+      {
+        "pattern": "(?<=SHAREPOINT_CONTRATOS_CLIENT_ID=\")[^\"]+",
+        "category": "SP_CONTRATOS_CLIENT_ID"
+      },
+      {
+        "pattern": "(?<=SHAREPOINT_CONTRATOS_CLIENT_SECRET=\")[^\"]+",
+        "category": "SP_CONTRATOS_CLIENT_SECRET"
+      },
+
+      {
+        "pattern": "(?<=MSGRAPH_MAIL_CLIENT_ID=\")[^\"]+",
+        "category": "MSGRAPH_CLIENT_ID"
+      },
+      {
+        "pattern": "(?<=MSGRAPH_MAIL_TENANT_ID=\")[^\"]+",
+        "category": "MSGRAPH_TENANT_ID"
+      },
+      {
+        "pattern": "(?<=MSGRAPH_MAIL_CLIENT_SECRET=\")[^\"]+",
+        "category": "MSGRAPH_CLIENT_SECRET"
+      },
+      {
+        "pattern": "(?<=MSGRAPH_MAIL_AUTHORIZED_SENDERS=\")[^\"]+",
+        "category": "MSGRAPH_AUTHORIZED_SENDERS"
+      }
+    ],
+    "builtin": ["email", "uuid", "ipv4"],
+    "exclude": [
+      "example.com",
+      "localhost",
+      "127.0.0.1",
+      "0.0.0.0",
+      "::1",
+      "/tmp/"
+    ]
+  }
+}

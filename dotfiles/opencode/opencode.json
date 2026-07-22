@@ -3,5 +3,10 @@
   "permission": {
     "edit": "ask",
     "bash": "ask"
-  }
+  },
+  "plugin": [
+    "opencode-gemini-auth@latest",
+    "opencode-vibeguard",
+    "@tarquinen/opencode-dcp@latest"
+  ]
 }
