@@ -66,3 +66,10 @@ alias glg="git log \
         %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' \
     --all"
 alias gl="glg -5"
+
+# =============================================================================
+# Aliases de Just
+# =============================================================================
+
+# Lanzar el selector de recetas de just con tv y la documentación en el preview
+alias jtv="just --choose --chooser 'tv --preview-command \"just --show {}\"'"
