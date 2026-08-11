@@ -6,8 +6,8 @@ description: 'Generador de mensajes de commit con estilo interno: emojis, tiempo
 ### Instrucciones
 
 <description>
-    Este skill actúa como un asistente para redactar mensajes de commit profesionales y detallados. 
-    Sigue las reglas de estilo de la organización: mensajes en español, uso obligatorio de emojis, 
+    Este skill actúa como un asistente para redactar mensajes de commit profesionales y detallados.
+    Sigue las reglas de estilo de la organización: mensajes en español, uso obligatorio de emojis,
     prefijos de ticket (opcional) y una explicación extendida de los cambios realizados.
 </description>
 

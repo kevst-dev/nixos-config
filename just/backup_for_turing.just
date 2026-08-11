@@ -71,7 +71,7 @@ restore-in-swiss snapshot path:
 	sudo {{swiss_run}} restic {{repository_swiss}} restore {{snapshot}} --target /tmp/restore --include "{{path}}"
 	@echo ""
 	@echo "Restaurado en: /tmp/restore{{path}}"
-		
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Estadisticas
 # ─────────────────────────────────────────────────────────────────────────────

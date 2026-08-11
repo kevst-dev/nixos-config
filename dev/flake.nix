@@ -27,8 +27,11 @@
             check-added-large-files.enable = true; # Verifica archivos grandes
             check-case-conflicts.enable = true; # Verifica conflictos de nombres de archivo
             check-merge-conflicts.enable = true; # Verifica conflictos de fusión
+            check-toml.enable = true; # Verifica sintaxis TOML
+            check-json.enable = true; # Verifica sintaxis JSON
             check-yaml.enable = true; # Verifica sintaxis YAML
             end-of-file-fixer.enable = true; # Añade newline al final de archivos
+            trim-trailing-whitespace.enable = true; # Elimina espacios al final de línea
 
             # === Hooks para Nix ===
             # Alejandra formatter - Rápido y semánticamente correcto

@@ -1,0 +1,4 @@
+# statix.toml - Configuración de statix
+# `repeated_keys` se desactiva: statix no entiende la semántica de módulos NixOS,
+# donde asignar `services.foo.bar = {...}` varias veces es intencional (se fusionan).
+disabled = ["repeated_keys"]
