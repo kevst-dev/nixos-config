@@ -23,6 +23,10 @@
         443 # HTTPS (Traefik)
         8080 # Traefik Dashboard
       ];
+      # Servir DNS local (Pi-hole) a la red: abre el puerto 53 UDP/TCP en el
+      # firewall para que los dispositivos de la LAN puedan usar a Turing como
+      # servidor DNS. Requiere el servicio Pi-hole corriendo (quadlet pihole).
+      enableLocalDns = true;
       inherit ip hostname;
     })
     ./users.nix
