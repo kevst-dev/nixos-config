@@ -40,6 +40,10 @@ turing:
 stallman:
 	{{rebuild_cmd}} --flake .#stallman
 
+# Desplegar en el router Sagan
+sagan:
+	{{rebuild_cmd}} --flake .#sagan
+
 ############################################################################
 #
 # Comandos de desarrollo y linting

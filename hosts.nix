@@ -32,4 +32,11 @@
     username = "kevst";
     tags = ["desktop" "server"];
   };
+
+  # Sagan: Router casero (Lenovo ThinkCentre M73 Tiny)
+  sagan = {
+    ip = null; # DHCP desde el módem durante la Fase 1
+    username = "kevst";
+    tags = ["router"];
+  };
 }

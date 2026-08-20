@@ -154,6 +154,13 @@
           npc = ./. + "/users/npc/tanenbaum.nix";
         };
       };
+
+      sagan = mkHost {
+        hostname = "sagan";
+        userConfig = ./. + "/users/${hosts.sagan.username}/sagan.nix";
+        includeWSL = false;
+        inherit (hosts.sagan) ip username;
+      };
     };
 
     # Tests de integración
