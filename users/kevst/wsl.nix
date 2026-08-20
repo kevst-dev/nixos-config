@@ -18,6 +18,9 @@
     ../../home/programs/starship.nix
     ../../home/programs/zoxide.nix
 
+    # SSH client (github, gitea-turing y aliases de hosts)
+    ../../home/programs/ssh.nix
+
     # Editor completo
     ../../home/programs/neovim
   ];

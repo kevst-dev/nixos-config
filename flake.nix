@@ -115,7 +115,7 @@
                 in
                   baseUsers // extraUsers;
                 extraSpecialArgs = {
-                  inherit inputs hostname ip username interface;
+                  inherit inputs hostname ip username interface hosts;
                 };
               };
             }
