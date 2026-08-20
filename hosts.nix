@@ -37,7 +37,7 @@
   # IP estática en Fase 1 (dentro de la subred del módem) para SSHeadleable
   # desde una IP fija sin depender de pantalla/HDMI.
   sagan = {
-    ip = "192.168.20.79.100";
+    ip = "192.168.20.100";
     interface = "eno1"; # NIC onboard Intel I217-V
     username = "kevst";
     tags = ["router"];
