@@ -159,7 +159,7 @@
         hostname = "sagan";
         userConfig = ./. + "/users/${hosts.sagan.username}/sagan.nix";
         includeWSL = false;
-        inherit (hosts.sagan) ip username;
+        inherit (hosts.sagan) ip username interface;
       };
     };
 

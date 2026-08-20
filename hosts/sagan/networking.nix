@@ -1,28 +1,26 @@
-{hostname, ...}: {
+{
+  hostname,
+  ip,
+  ...
+}: {
   # =========================================================================
-  # Networking FASE 1: acceso básico vía SSH
+  # Networking FASE 1: IP estática para acceso SSH sin pantalla/HDMI
   # =========================================================================
-  # El M73 Tiny tiene una sola NIC onboard (Intel I217-V). En esta fase usa
-  # DHCP contra el módem/router actual para quedar accesible por SSH.
+  # El M73 Tiny tiene una sola NIC onboard (Intel I217-V, `eno1`). Se le asigna
+  # una IP estática dentro de la subred del módem para poder conectarnos por
+  # SSH a una dirección fija, sin depender del DHCP (ni de pantalla/HDMI para
+  # descubrir la IP). Gateway y DNS los pone el módulo común networking.nix.
   #
-  # En FASE 2 se reemplaza este archivo: renombrado de interfaces por MAC
-  # (wan0/lan0), NAT, firewall de router y DHCP/Kea para la LAN.
+  # En FASE 2 se reemplaza: renombrado de interfaces por MAC (wan0/lan0), NAT,
+  # firewall de router y DHCP/Kea para la LAN.
   # =========================================================================
-
-  networking = {
-    hostName = hostname;
-
-    # Asigna DHCP a todas las interfaces. No dependemos del nombre de la NIC
-    # (eno1/enp0s25/...) porque aún no conocemos el naming de udev del M73.
-    useDHCP = true;
-
-    # Firewall del host: solo SSH abierto por ahora.
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [22];
-    };
-  };
-
-  # systemd-resolved para resolución DNS local (igual que el resto de hosts)
-  services.resolved.enable = true;
+  imports = [
+    (import ../../modules/common/networking.nix {
+      interface = "eno1";
+      firewallPorts = [
+        22 # SSH
+      ];
+      inherit hostname ip;
+    })
+  ];
 }
