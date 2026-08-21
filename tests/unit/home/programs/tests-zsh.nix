@@ -64,6 +64,11 @@
     machine.succeed("su - testuser -c 'grep -q \"zsh-you-should-use\" ~/.zshrc'")
     print("   ✓ Plugin zsh-you-should-use cargado")
 
+    machine.succeed(
+      "su - testuser -c 'test -d ~/.nix-profile/share/zsh/site-functions && find ~/.nix-profile/share/zsh/site-functions -maxdepth 1 -name \"_*\" | grep -q .'"
+    )
+    print("   ✓ Completions de paquetes disponibles en site-functions (zsh-completions)")
+
     print("🧪 Probando funcionalidad básica de zsh...")
     machine.succeed("su - testuser -c 'zsh -c \"echo test\"' | grep -q 'test'")
     print("   ✓ Zsh ejecuta comandos correctamente")

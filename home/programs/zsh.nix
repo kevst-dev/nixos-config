@@ -18,6 +18,15 @@
   # 2. initContent: carga nuestra configuración personalizada
   # ==========================================================================
 
+  # Paquetes comunes a todos los hosts que importan este módulo.
+  # Los plugins de Zsh se gestionan en programs.zsh.plugins.
+  home.packages = with pkgs; [
+    # Completions extra de zsh-users. Se instalan en share/zsh/site-functions,
+    # que home-manager añade al fpath automáticamente (vía NIX_PROFILES),
+    # por lo que no requieren config adicional (y evitan un doble compinit).
+    zsh-completions
+  ];
+
   programs.zsh = {
     enable = true;
 
@@ -55,7 +64,7 @@
         src = pkgs.fetchFromGitHub {
           owner = "MichaelAquilina";
           repo = "zsh-you-should-use";
-          rev = "1.10.1";
+          rev = "1.11.1";
           sha256 = "sha256-u3abhv9ewq3m4QsnsxT017xdlPm3dYq5dqHNmQhhcpI=";
         };
       }
