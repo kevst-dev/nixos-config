@@ -62,31 +62,5 @@
     };
 
     groups.${username} = {};
-
-    # Usuario secundario "npc" (servidor) con la misma huella de shell/SSH
-    users.npc = {
-      isNormalUser = true;
-      shell = pkgs.zsh;
-      description = "npc";
-      group = "npc";
-      extraGroups = [
-        "wheel"
-        "networkmanager"
-      ];
-      linger = true;
-      subUidRanges = [
-        {
-          startUid = 110000;
-          count = 65536;
-        }
-      ];
-      subGidRanges = [
-        {
-          startGid = 110000;
-          count = 65536;
-        }
-      ];
-    };
-    groups.npc = {};
   };
 }
