@@ -23,6 +23,12 @@
         group = username;
         mode = "0600";
       };
+      forgejo_turing_ssh_key = {
+        path = "/home/${username}/.ssh/forgejo_turing_ed25519";
+        owner = username;
+        group = username;
+        mode = "0600";
+      };
     };
   };
 }
