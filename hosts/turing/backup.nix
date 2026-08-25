@@ -37,27 +37,33 @@
 #    - Auth URL: https://swiss-backup04.infomaniak.com/identity/v3
 #    - Container: nixos-turing-restic
 #
-# 2. PATHS A RESPALDAR:
-#    - /DATA/AppData: Configuraciones y datos de todos los servicios
+# 3. PATHS A RESPALDAR (config y datos de servicios autoalojados):
+#    - /DATA/AppData: configs de servicios (forja git, marcadores, DNS, etc.)
+#    - /mnt/nvme0n1/immich y /jellyfin: solo config/DB (media excluida)
+#    - /mnt/nvme0n1/Documents/mealie: recetas
+#    - /mnt/nvme0n1/Documents/Sync: carpeta sincronizada con Syncthing
 #
-# 3. EXCLUSIONES (para optimizar espacio y tiempo):
+# 4. EXCLUSIONES (para optimizar espacio y tiempo):
 #    - Caches y archivos temporales (regenerables)
 #    - Immich: Solo se respalda DB y config, NO los archivos media
 #      (los uploads, thumbs, encoded-video y library son regenerables
 #      o el usuario tiene los originales)
+#    - Jellyfin: Solo config, NO media ni caches (los originales están
+#      en /mnt/nvme0n1/Documents o son de escaneado)
+#    - downloads/ de qBittorrent: torrents regenerables (no se respaldan)
 #
-# 4. FRECUENCIA:
+# 5. FRECUENCIA:
 #    - Local: Cada 6 horas (00:00, 06:00, 12:00, 18:00)
 #    - Remoto: Diario con delay aleatorio de hasta 1h
 #    - Prune LOCAL: Semanal (domingo 03:00)
 #    - Prune REMOTO: Semanal (sábado 02:00)
 #
-# 5. RETENCIÓN:
+# 6. RETENCIÓN:
 #    - 7 snapshots diarios
 #    - 4 snapshots semanales
 #    - 6 snapshots mensuales
 #
-# 6. SEPARACIÓN BACKUP/PRUNE:
+# 7. SEPARACIÓN BACKUP/PRUNE:
 #    - El backup y el prune se ejecutan en jobs SEPARADOS
 #    - Esto permite controlar mejor la frecuencia de limpieza
 #    - Prune es más costoso en recursos, ejecutarlo semanalmente es suficiente
@@ -191,15 +197,20 @@
   resticPasswordFile = config.sops.secrets.restic_password.path;
 
   commonPaths = [
+    # Media: solo config/DB (media excluida en commonExcludes)
     "/mnt/nvme0n1/immich"
     "/mnt/nvme0n1/jellyfin"
+
+    # Datos de usuario y aplicaciones
+    "/mnt/nvme0n1/Documents/mealie"
+    "/mnt/nvme0n1/Documents/Sync"
+    "/DATA/AppData/forgejo"
+    "/DATA/AppData/linkding"
+    "/DATA/AppData/pihole"
     "/DATA/AppData/inventree-marco"
-    # "/DATA/AppData/inventree-sandro"
-    # "/DATA/AppData/pocketid"
     "/DATA/AppData/traefik"
     "/DATA/AppData/tududi"
     "/DATA/AppData/papra/"
-    "/DATA/AppData/gitea/"
     "/DATA/AppData/vaultwarden/"
   ];
 
@@ -227,6 +238,9 @@
 
     # InvenTree: /static regenera sola (pesa cientos de MB).
     "**/inventree-marco/static"
+
+    # qBittorrent: torrents regenerables (no se respaldan)
+    "**/downloads/"
   ];
 
   commonPruneOpts = [
