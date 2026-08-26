@@ -9,6 +9,9 @@
     ./networking.nix
     ./ssh.nix
     ./users.nix
+
+    # SOPS-Nix para gestión de secretos
+    ./sops.nix
   ];
 
   # stateVersion es la "Versión de Instalación Original" de NixOS

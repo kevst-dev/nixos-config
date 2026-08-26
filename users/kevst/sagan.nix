@@ -19,6 +19,7 @@
     # SSH client (github, gitea-turing)
     ../../home/programs/ssh.nix
 
-    # Sin neovim en el router: libera ~300MB de RAM en un equipo de 4GB.
+    # Editor
+    ../../home/programs/neovim
   ];
 }
